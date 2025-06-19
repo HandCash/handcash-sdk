@@ -2,7 +2,6 @@ import { getInstance } from './sdk.js';
 import { Connect } from './client/sdk.gen.js';
 
 const sdk = getInstance({
-   baseUrl: 'https://iae.cloud.handcash.io',
    appId: '<APP-ID>',
    appSecret: '<APP-SECRET>',
 });
