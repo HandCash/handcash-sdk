@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "declaration": true,
+    "target": "ES2020",
+    "strict": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "allowJs": false,
+    "sourceMap": true,
+    "emitDeclarationOnly": false,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "composite": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false
+  }
+}
