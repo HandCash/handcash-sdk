@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "generate-sdk": "node src/cli/connectSdkGenerator.js",
-    "example": "node src/example.ts"
+    "build": "npm run generate-sdk && tsc",
+    "example": "npm run build && node dist/example.js"
   },
   "dependencies": {
     "@hey-api/client-fetch": "0.13.0",
-    "bsv": "2.0.10"
+    "bsv": "1.5.4"
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "0.72.0",

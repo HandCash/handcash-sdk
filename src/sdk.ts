@@ -1,6 +1,6 @@
 import { createClient, createConfig } from '@hey-api/client-fetch';
 import bsv from 'bsv';
-import type { ClientOptions } from './client';
+import type { ClientOptions } from './client/index.js';
 
 const { PrivateKey, PublicKey } = bsv;
 const { ECDSA, Hash } = bsv.crypto;
