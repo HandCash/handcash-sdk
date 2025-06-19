@@ -1,3 +1,3 @@
-# HandCash Cloud SDK
+# HandCash SDK
 
-HandCash cloud SDK
+HandCash SDK - TODO
