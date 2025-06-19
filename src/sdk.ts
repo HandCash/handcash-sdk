@@ -18,7 +18,7 @@ export function getInstance(options: ConnectOptions) {
    }
 }
 
-export function getClient(options: ConnectOptions, privateKey?: string) {
+function getClient(options: ConnectOptions, privateKey?: string) {
    const client= createClient(createConfig<ClientOptions>());
    const config = {
       baseUrl: 'https://cloud.handcash.io',
