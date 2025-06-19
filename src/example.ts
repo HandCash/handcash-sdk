@@ -8,17 +8,21 @@ const sdk = getInstance({
 });
 
 
+const printToConsole = (result: any) => {
+   console.log(JSON.stringify(result, null, 2));
+}
+
 (async () => {
    const client = sdk.getAccountClient('<PRIVATE-KEY>');
 
    let result: any = await Connect.getCurrentUserProfile({ client });
-   console.log(JSON.stringify(result, null, 2));
+   printToConsole(result);
 
    result = await Connect.getExchangeRate({
       client,
       path: { currencyCode: 'USD' }
    });
-   console.log(JSON.stringify(result, null, 2));
+   printToConsole(result);
 
    result = await Connect.pay({
       client,
@@ -31,5 +35,5 @@ const sdk = getInstance({
          }]
       }
    });
-   console.log(JSON.stringify(result, null, 2));
+   printToConsole(result);
 })();
