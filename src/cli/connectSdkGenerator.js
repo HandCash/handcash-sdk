@@ -4,9 +4,9 @@ import path from 'path';
 async function generateSDK() {
    await createClient({
       input: {
-         path: path.join(process.cwd(), 'docs', 'connectOpenapi.json'),
+         path: path.join(process.cwd(), 'docs', 'sdkOpenapi.json'),
       },
-      output: path.join(process.cwd(), 'connect-sdk/client'),
+      output: path.join(process.cwd(), 'src/client'),
       plugins: [
          '@hey-api/client-fetch',
          {
@@ -17,5 +17,4 @@ async function generateSDK() {
    });
 }
 
-// eslint-disable-next-line no-console
 generateSDK().catch(console.error);
