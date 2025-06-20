@@ -13,7 +13,7 @@ jobs:
             - v1-npm-{{ checksum "package.json" }}
       - run:
           name: install
-          command: npm run install:secure
+          command: npm run install
       - save_cache:
           key: v1-npm-{{ checksum "package.json" }}
           paths:
