@@ -114,26 +114,6 @@ export class Connect {
         return (options.client ?? _heyApiClient).get<GetPublicUserProfilesResponses, unknown, ThrowOnError>({
             security: [
                 {
-                    name: 'oauth-publickey',
-                    type: 'apiKey'
-                },
-                {
-                    name: 'oauth-signature',
-                    type: 'apiKey'
-                },
-                {
-                    name: 'oauth-nonce',
-                    type: 'apiKey'
-                },
-                {
-                    name: 'oauth-timestamp',
-                    type: 'apiKey'
-                },
-                {
-                    name: 'oauth-privatekey',
-                    type: 'apiKey'
-                },
-                {
                     name: 'app-id',
                     type: 'apiKey'
                 },
@@ -193,26 +173,6 @@ export class Connect {
     public static getExchangeRate<ThrowOnError extends boolean = false>(options: Options<GetExchangeRateData, ThrowOnError>) {
         return (options.client ?? _heyApiClient).get<GetExchangeRateResponses, unknown, ThrowOnError>({
             security: [
-                {
-                    name: 'oauth-publickey',
-                    type: 'apiKey'
-                },
-                {
-                    name: 'oauth-signature',
-                    type: 'apiKey'
-                },
-                {
-                    name: 'oauth-nonce',
-                    type: 'apiKey'
-                },
-                {
-                    name: 'oauth-timestamp',
-                    type: 'apiKey'
-                },
-                {
-                    name: 'oauth-privatekey',
-                    type: 'apiKey'
-                },
                 {
                     name: 'app-id',
                     type: 'apiKey'

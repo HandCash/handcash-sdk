@@ -1,5 +1,4 @@
-import { getInstance } from './sdk.js';
-import { Connect } from './client/sdk.gen.js';
+import { getInstance, Connect } from './sdk.js';
 
 const sdk = getInstance({
    appId: '<APP-ID>',

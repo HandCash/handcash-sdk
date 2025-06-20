@@ -5,6 +5,8 @@ import type { ClientOptions } from './client/index.js';
 const { PrivateKey, PublicKey } = bsv;
 const { ECDSA, Hash } = bsv.crypto;
 
+export * from './client/index.js';
+
 export type ConnectOptions = {
    appSecret: string;
    appId: string;
