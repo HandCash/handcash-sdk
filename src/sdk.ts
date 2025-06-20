@@ -22,7 +22,7 @@ export function getInstance(options: ConnectOptions) {
       const encodedParams = Object.entries(queryParameters)
           .map(([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`)
           .join('&');
-      return `${options.baseUrl}/#/authorizeApp?${encodedParams}`;
+      return `https://app.handcash.io/#/authorizeApp?${encodedParams}`;
    }
    }
 }
