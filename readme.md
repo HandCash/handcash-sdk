@@ -1,4 +1,6 @@
-The HandCash SDK is a server-side Node.js library built for secure interaction with HandCash accounts.
+The HandCash SDK is a server-side Node.js library designed to securely interact with HandCash accounts, enabling features like payments, user profiles, and transaction history.
+
+For full API reference and detailed usage examples, visit: https://cloud.handcash.io/sdk-docs/
 
 ## Requirements
 
