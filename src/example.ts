@@ -16,10 +16,10 @@ const printToConsole = (result: any) => {
    let result: any = await Connect.getCurrentUserProfile({ client });
    printToConsole(result);
 
-   result = await Connect.getExchangeRate({
-      client,
-      path: { currencyCode: 'USD' }
-   });
+   result = await Connect.getExchangeRate({ client: sdk.client, path: { currencyCode: 'USD' } });
+   printToConsole(result);
+
+   result = await Connect.getSpendableBalances({ client });
    printToConsole(result);
 
    result = await Connect.pay({
