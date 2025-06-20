@@ -15,12 +15,12 @@ export type ConnectOptions = {
 
 export function getInstance(options: ConnectOptions) {
    return {
-      getAccountClient: (privateKey : string) => getClient(options,  privateKey),
+      getAccountClient: (accessKey : string) => getClient(options,  accessKey),
       client: getClient(options),
    }
 }
 
-function getClient(options: ConnectOptions, privateKey?: string) {
+function getClient(options: ConnectOptions, accessKey?: string) {
    const client= createClient(createConfig<ClientOptions>());
    const config = {
       baseUrl: 'https://cloud.handcash.io',
@@ -35,13 +35,13 @@ function getClient(options: ConnectOptions, privateKey?: string) {
       }
    });
 
-   if (privateKey) {
-      client.interceptors.request.use(createAuthInterceptor(privateKey));
+   if (accessKey) {
+      client.interceptors.request.use(createAuthInterceptor(accessKey));
    }
    return client;
 }
 
-function createAuthInterceptor(privateKey: string) {
+function createAuthInterceptor(accessKey: string) {
    return async function (request: any) {
       const timestamp = new Date().toISOString();
       const nonce = Math.random().toString(36).substring(2);
@@ -51,9 +51,9 @@ function createAuthInterceptor(privateKey: string) {
 
       const payload = `${method}\n${endpoint}\n${timestamp}\n${body || ''}\n${nonce}`;
       const hashedPayload = Hash.sha256(Buffer.from(payload));
-      const privateKeyObject = PrivateKey(privateKey);
-      const publicKey = PublicKey.fromPrivateKey(privateKeyObject).toHex();
-      const signature = ECDSA.sign(hashedPayload, privateKeyObject).toString();
+      const accessKeyObject = PrivateKey(accessKey);
+      const publicKey = PublicKey.fromPrivateKey(accessKeyObject).toHex();
+      const signature = ECDSA.sign(hashedPayload, accessKeyObject).toString();
 
       request.headers.set('oauth-signature', signature);
       request.headers.set('oauth-publickey', publicKey);
