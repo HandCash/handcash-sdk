@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@hey-api/client-fetch": "0.13.0",
-    "bsv": "1.5.4"
+    "@noble/curves": "1.9.2"
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "0.72.0",
