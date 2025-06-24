@@ -19,7 +19,6 @@ Please see [CHANGES.md](./CHANGES.md) for a list of notable changes and version 
     - [Understanding permissions](#understanding-permissions)
     - [Authorisation](#authorisation)
 - [SDK](#handcash-sdk)
-    - [Accessing Existing User Accounts](#accessing-existing-user-accounts)
     - [Get user profile](#get-user-profile)
     - [Get spendable balance](#get-spendable-balances)
     - [Get exchange rate](#get-exchange-rate)
