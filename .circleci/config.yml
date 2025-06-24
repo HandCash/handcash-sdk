@@ -15,8 +15,8 @@ jobs:
       - run:
           name: Set Git identity
           command: |
-            git config –global user.email "info@handcash.io"
-            git config –global user.name "HandCash CI Bot"
+            git config --global user.email "info@handcash.io"
+            git config --global user.name "HandCash CI Bot"
       - run:
           name: Authenticate npm
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
