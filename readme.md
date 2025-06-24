@@ -23,6 +23,8 @@ Please see [CHANGES.md](./CHANGES.md) for a list of notable changes and version 
     - [Get spendable balance](#get-spendable-balances)
     - [Get exchange rate](#get-exchange-rate)
     - [Transfer money](#transfer-money)
+- [Error Handling](#error-handling)
+    - [Common Error Types](#common-error-types)
 
 ## Getting started
 
@@ -138,3 +140,46 @@ const result = await Connect.pay({
   }
 });
 ```
+
+
+## Error Handling
+
+The HandCash SDK uses a structured error handling approach to help you handle various types of errors that may occur during API interactions.
+
+```typescript
+import { getInstance, Connect } from '@handcash/sdk';
+const result = await Connect.pay({
+  client,
+  body: {
+    instrumentCurrencyCode: 'BSV',
+    denominationCurrencyCode: 'USD',
+    receivers: [{
+      sendAmount: 0.01,
+      destination: 'nosetwo'
+    }]
+  }
+});  
+if (result.data) {
+  // Payment successful console.log('Payment completed:', result.data);
+}
+if (result.error) {
+  // Payment failed console.log('Payment failed:', result.error);
+}
+
+```
+
+### Common Error Types
+
+All SDK operations may throw the following types of errors:
+
+1. **Authentication Errors**
+  - Occurs when the provided `appId` or `appSecret` is invalid
+  - Occurs when the user's `authToken` is invalid or expired
+
+2. **Permission Errors**
+  - Occurs when your app tries to access features not granted in its permissions
+  - Occurs when a payment exceeds the user's spending limit
+
+3. **Other Errors**
+  - Occurs when the user has insufficient balance
+  - Occurs when payment parameters are invalid
