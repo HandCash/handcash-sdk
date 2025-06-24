@@ -1,5 +1,9 @@
 version: 2.1
 
+parameters:
+  version:
+    type: string
+    default: "patch" # or "minor", "major", or an explicit version like "1.2.3"
 jobs:
   build:
     docker:
@@ -21,6 +25,17 @@ jobs:
       - run:
           name: build
           command: npm run build
+  publish:
+    docker:
+      - image: cimg/node:20.11
+    steps:
+      - checkout
+      - run:
+          name: Set npm version
+          command: npm version << pipeline.parameters.version >>
+      - run:
+          name: Publish package
+          command: npm publish
 workflows:
   version: 2
   build:
