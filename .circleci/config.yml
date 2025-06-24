@@ -57,7 +57,7 @@ jobs:
                   - node_modules
             - run:
                 name: Set npm version
-                command: npm version << pipeline.parameters.version >>
+                command: npm version << pipeline.parameters.version >> --no-git-tag-version
             - run:
                 name: Publish package
                 command: npm publish
