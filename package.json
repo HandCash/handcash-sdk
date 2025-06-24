@@ -1,6 +1,12 @@
 {
   "name": "@handcash/sdk",
-  "version": "0.0.0",
+  "version": "1.0.0-beta.1",
+  "description": "Handcash SDK for Node.js",
+  "homepage": "https://github.com/HandCash/handcash-sdk",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HandCash/handcash-sdk.git"
+  },
   "type": "module",
   "main": "./dist/sdk.js",
   "types": "./dist/sdk.d.ts",
