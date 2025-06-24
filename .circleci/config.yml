@@ -63,6 +63,10 @@ workflows:
     triggers:
       - schedule:
           cron: "0 0 31 2 *"
+          filters:
+            branches:
+              only:
+                - master
     jobs:
       - publish:
           context:
