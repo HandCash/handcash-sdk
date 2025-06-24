@@ -61,17 +61,9 @@ workflows:
       - build
   publish:
     jobs:
-      - hold:
-          type: approval
-          filters:
-            branches:
-              only:
-                - master
       - publish:
           context:
             - npm
-          requires:
-            - hold
           filters:
             branches:
               only:
