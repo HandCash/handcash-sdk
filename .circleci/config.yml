@@ -41,3 +41,10 @@ workflows:
   build:
     jobs:
       - build
+      - publish:
+          context:
+            - npm
+          filters:
+            branches:
+              only:
+                - master
