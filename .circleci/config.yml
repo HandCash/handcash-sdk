@@ -35,13 +35,6 @@ jobs:
     steps:
       - checkout
       - when:
-          condition:
-            not: << pipeline.parameters.run_publish >>
-          steps:
-            - run:
-                name: Skip Job
-                command: circleci-agent step halt "Publishing skipped - manual trigger required"
-      - when:
           condition: << pipeline.parameters.run_publish >>
           steps:
             - restore_cache:
