@@ -291,5 +291,5 @@ export type GetPaymentDetailsResponses = {
 export type GetPaymentDetailsResponse = GetPaymentDetailsResponses[keyof GetPaymentDetailsResponses];
 
 export type ClientOptions = {
-    baseUrl: 'https://iae.cloud.handcash.io' | (string & {});
+    baseUrl: 'https://cloud.handcash.io' | (string & {});
 };
