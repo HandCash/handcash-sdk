@@ -1,20 +1,42 @@
 {
   "name": "@handcash/sdk",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "./dist/sdk.js",
+  "types": "./dist/sdk.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "handcash",
+    "sdk",
+    "bsv"
+  ],
+  "author": "Handcash",
+  "license": "MIT",
   "scripts": {
     "generate-sdk": "node src/cli/connectSdkGenerator.js",
-    "build": "npm run generate-sdk && tsc",
+    "build": "tsc",
+    "release": "npm run build && changeset publish",
+    "release:dry": "npm run build && changeset pre-exit",
+    "prepublishOnly": "npm run build",
     "example": "npm run build && node dist/example.js"
   },
   "dependencies": {
     "@hey-api/client-fetch": "0.13.0",
-    "bsv": "1.5.4"
+    "@noble/curves": "1.9.2"
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "0.72.0",
     "@types/node": "^24.0.3",
-    "typescript": "5.5.3"
+    "typescript": "5.5.3",
+    "@changesets/cli": "2.29.5"
   }
 }

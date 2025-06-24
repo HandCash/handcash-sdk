@@ -1,6 +1,5 @@
 node_modules/
 .idea/
 dist/
-/package-lock.json
 *.log
 /tsconfig.tsbuildinfo

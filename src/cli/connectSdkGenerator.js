@@ -4,7 +4,7 @@ import path from 'path';
 async function generateSDK() {
    await createClient({
       input: {
-         path: path.join(process.cwd(), 'docs', 'sdkOpenapi.json'),
+         path: 'https://cloud.handcash.io/sdk-docs.json',
       },
       output: path.join(process.cwd(), 'src/client'),
       plugins: [

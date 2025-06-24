@@ -1,24 +1,32 @@
 import { createClient, createConfig } from '@hey-api/client-fetch';
-import bsv from 'bsv';
 import type { ClientOptions } from './client/index.js';
+import { createHash } from 'node:crypto';
+import { secp256k1 } from '@noble/curves/secp256k1';
+import { PrivKey } from '@noble/curves/abstract/utils';
 
-const { PrivateKey, PublicKey } = bsv;
-const { ECDSA, Hash } = bsv.crypto;
-
+export * from './client/index.js';
 export type ConnectOptions = {
    appSecret: string;
    appId: string;
    baseUrl?: string;
 };
+export type QueryParams = Record<string, string>;
 
 export function getInstance(options: ConnectOptions) {
    return {
-      getAccountClient: (privateKey : string) => getClient(options,  privateKey),
+      getAccountClient: (authToken : string) => getClient(options,  authToken),
       client: getClient(options),
+      getRedirectionUrl: (queryParameters: QueryParams = {}) => {
+         queryParameters.appId = options.appId;
+         const encodedParams = Object.entries(queryParameters)
+             .map(([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`)
+             .join('&');
+         return `https://app.handcash.io/#/authorizeApp?${encodedParams}`;
+      }
    }
 }
 
-function getClient(options: ConnectOptions, privateKey?: string) {
+function getClient(options: ConnectOptions, authToken?: string) {
    const client= createClient(createConfig<ClientOptions>());
    const config = {
       baseUrl: 'https://cloud.handcash.io',
@@ -33,13 +41,13 @@ function getClient(options: ConnectOptions, privateKey?: string) {
       }
    });
 
-   if (privateKey) {
-      client.interceptors.request.use(createAuthInterceptor(privateKey));
+   if (authToken) {
+      client.interceptors.request.use(createAuthInterceptor(authToken));
    }
    return client;
 }
 
-function createAuthInterceptor(privateKey: string) {
+function createAuthInterceptor(authToken: string) {
    return async function (request: any) {
       const timestamp = new Date().toISOString();
       const nonce = Math.random().toString(36).substring(2);
@@ -47,11 +55,15 @@ function createAuthInterceptor(privateKey: string) {
       const body = await request.clone().text();
       const endpoint = new URL(request.url).pathname;
 
-      const payload = `${method}\n${endpoint}\n${timestamp}\n${body || ''}\n${nonce}`;
-      const hashedPayload = Hash.sha256(Buffer.from(payload));
-      const privateKeyObject = PrivateKey(privateKey);
-      const publicKey = PublicKey.fromPrivateKey(privateKeyObject).toHex();
-      const signature = ECDSA.sign(hashedPayload, privateKeyObject).toString();
+      const publicKey = Buffer.from(secp256k1.getPublicKey(authToken)).toString('hex');
+      const signature = getRequestSignature(
+          method,
+          endpoint,
+          body,
+          timestamp,
+          authToken,
+          nonce
+      );
 
       request.headers.set('oauth-signature', signature);
       request.headers.set('oauth-publickey', publicKey);
@@ -60,4 +72,17 @@ function createAuthInterceptor(privateKey: string) {
 
       return request;
    };
+}
+
+function getRequestSignature(
+    method: string,
+    endpoint: string,
+    body: string | undefined = '',
+    timestamp: string,
+    privateKey: PrivKey,
+    nonce: string
+): string {
+   const signaturePayload = `${method}\n${endpoint}\n${timestamp}\n${body}\n${nonce}`;
+   const payloadHash = createHash('sha256').update(signaturePayload).digest('hex');
+   return secp256k1.sign(payloadHash, privateKey).toDERHex();
 }

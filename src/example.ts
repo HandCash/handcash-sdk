@@ -1,5 +1,4 @@
-import { getInstance } from './sdk.js';
-import { Connect } from './client/sdk.gen.js';
+import { getInstance, Connect } from './sdk.js';
 
 const sdk = getInstance({
    appId: '<APP-ID>',
@@ -17,10 +16,10 @@ const printToConsole = (result: any) => {
    let result: any = await Connect.getCurrentUserProfile({ client });
    printToConsole(result);
 
-   result = await Connect.getExchangeRate({
-      client,
-      path: { currencyCode: 'USD' }
-   });
+   result = await Connect.getExchangeRate({ client: sdk.client, path: { currencyCode: 'USD' } });
+   printToConsole(result);
+
+   result = await Connect.getSpendableBalances({ client });
    printToConsole(result);
 
    result = await Connect.pay({

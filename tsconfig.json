@@ -3,6 +3,7 @@
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
     "declaration": true,
+    "declarationMap": true,
     "target": "ES2020",
     "strict": true,
     "outDir": "./dist",
