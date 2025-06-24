@@ -60,14 +60,19 @@ workflows:
     jobs:
       - build
   publish:
-    triggers:
-      - schedule:
-          cron: "0 0 31 2 *"
+    jobs:
+      - hold:
+          type: approval
           filters:
             branches:
               only:
                 - master
-    jobs:
       - publish:
           context:
             - npm
+          requires:
+            - hold
+          filters:
+            branches:
+              only:
+                - master
