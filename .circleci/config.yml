@@ -1,29 +1,78 @@
 version: 2.1
 
+parameters:
+  version:
+    type: string
+    default: "patch" # or "minor", "major", or an explicit version like "1.2.3"
 jobs:
   build:
     docker:
       - image: cimg/node:20.11.1
     steps:
-      - checkout
       - setup_remote_docker:
           docker_layer_caching: true
+      - checkout
       - restore_cache:
           keys:
-            - v1-npm-{{ checksum "package.json" }}
+            - v1-npm-{{ checksum "package-lock.json" }}
       - run:
           name: install
-          command: npm run install
+          command: npm install
       - save_cache:
-          key: v1-npm-{{ checksum "package.json" }}
+          key: v1-npm-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
-            - package-lock.json
       - run:
           name: build
           command: npm run build
+  publish:
+    docker:
+      - image: cimg/node:20.11
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-npm-{{ checksum "package-lock.json" }}
+      - run:
+          name: Set Git identity
+          command: |
+            git config --global user.email "rafa@handcash.io"
+            git config --global user.name "handcash"
+      - run:
+          name: Authenticate npm
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run:
+          name: install
+          command: npm install
+      - save_cache:
+          key: v1-npm-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Set npm version
+          command: npm version << pipeline.parameters.version >>
+      - run:
+          name: Publish package
+          command: npm publish
 workflows:
   version: 2
   build:
     jobs:
       - build
+  publish:
+    jobs:
+      - hold:
+          type: approval
+          filters:
+            branches:
+              only:
+                - master
+      - publish:
+          context:
+            - npm
+          requires:
+            - hold
+          filters:
+            branches:
+              only:
+                - master
