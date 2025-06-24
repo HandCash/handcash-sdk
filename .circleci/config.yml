@@ -41,6 +41,8 @@ workflows:
   build:
     jobs:
       - build
+  publish:
+    jobs:
       - publish:
           context:
             - npm
