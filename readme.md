@@ -2,6 +2,10 @@ The HandCash SDK is a server-side Node.js library designed to securely interact 
 
 For full API reference and detailed usage examples, visit: https://cloud.handcash.io/sdk-docs/
 
+## Change log
+
+Please see [CHANGES.md](./CHANGES.md) for a list of notable changes and version history.
+
 ## Requirements
 
 - Node `v16.X` or higher
@@ -10,8 +14,7 @@ For full API reference and detailed usage examples, visit: https://cloud.handcas
 ## Documentation
 
 - [Getting started](#getting-started)
-- [HandCash Connect](#handcash-connect)
-    - [Understanding permissions](#understanding-permissions)
+- [Understanding permissions](#understanding-permissions)
     - [Accessing Existing User Accounts](#accessing-existing-user-accounts)
     - [Get user profile](#get-user-profile)
     - [Get spendable balance](#get-spendable-balances)
