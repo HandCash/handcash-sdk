@@ -4,6 +4,10 @@ parameters:
   version:
     type: string
     default: "patch" # or "minor", "major", or an explicit version like "1.2.3"
+  run_publish:
+    type: boolean
+    default: false
+
 jobs:
   build:
     docker:
@@ -26,6 +30,7 @@ jobs:
           name: build
           command: npm run build
   publish:
+    when: << pipeline.parameters.run_publish >>
     docker:
       - image: cimg/node:20.11
     steps:
@@ -61,17 +66,9 @@ workflows:
       - build
   publish:
     jobs:
-      - hold:
-          type: approval
-          filters:
-            branches:
-              only:
-                - master
       - publish:
           context:
             - npm
-          requires:
-            - hold
           filters:
             branches:
               only:
