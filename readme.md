@@ -35,7 +35,7 @@ To use this SDK, you’ll need an `appId` to identify your application and an `a
 To get started, create an instance of HandCashSDK. This instance serves as the main entry point for interacting with the SDK and accessing its features.
 
 ```typescript
-import { getInstance, Connect } from '@handcash-sdk';
+import { getInstance, Connect } from '@handcash/sdk';
 
 const sdk = getInstance({
   appId: '<APP-ID>',
@@ -82,7 +82,7 @@ This URL is where you’ll receive the authToken and continue the authentication
 The code below demonstrates how to retrieve a user’s profile.
 
 ```typescript
-import { Connect } from '@handcash-sdk';
+import { Connect } from '@handcash/sdk';
 
 const result = await Connect.getCurrentUserProfile({ client });
 ```
@@ -92,7 +92,7 @@ const result = await Connect.getCurrentUserProfile({ client });
 Users can set daily spending limits for apps in their preferences.
 
 ```typescript
-import { Connect } from '@handcash-sdk';
+import { Connect } from '@handcash/sdk';
 
 const result = await Connect.getSpendableBalances({ client });
 ```
@@ -105,7 +105,7 @@ In this example, we fetch the exchange rate for USD. As you’ll notice, the cli
 This is possible because certain generic endpoints, like this one, don’t require user authentication, allowing the use of a static client.
 
 ```typescript
-import { Connect } from '@handcash-sdk';
+import { Connect } from '@handcash/sdk';
 
 const result = await Connect.getExchangeRate({ client: sdk.client, path: { currencyCode: 'USD' } });
 ```
@@ -117,7 +117,7 @@ The code below demonstrates how to initiate a simple payment from the user’s w
 In this example, the payment transfers an amount equivalent to 0.01 USD (denominated in BSV) to the user with the handle `nosetwo`.
 
 ```typescript
-import { Connect } from '@handcash-sdk';
+import { Connect } from '@handcash/sdk';
 
 const result = await Connect.pay({
   client,
