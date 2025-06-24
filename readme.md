@@ -14,7 +14,11 @@ Please see [CHANGES.md](./CHANGES.md) for a list of notable changes and version 
 ## Documentation
 
 - [Getting started](#getting-started)
-- [Understanding permissions](#understanding-permissions)
+    - [Developer dashboard](#developer-dashboard)
+    - [Installation](#installation)
+    - [Understanding permissions](#understanding-permissions)
+    - [Authorisation](#authorisation)
+- [SDK](#handcash-sdk)
     - [Accessing Existing User Accounts](#accessing-existing-user-accounts)
     - [Get user profile](#get-user-profile)
     - [Get spendable balance](#get-spendable-balances)
@@ -33,19 +37,6 @@ To use this SDK, you’ll need an `appId` to identify your application and an `a
 
 `npm i @handcash-sdk`
 
-## HandCash SDK
-
-To get started, create an instance of HandCashSDK. This instance serves as the main entry point for interacting with the SDK and accessing its features.
-
-```typescript
-import { getInstance, Connect } from '@handcash/sdk';
-
-const sdk = getInstance({
-  appId: '<APP-ID>',
-  appSecret: '<APP-SECRET>',
-});
-```
-
 ### Understanding permissions
 
 The `authToken` represents the set of permissions granted to your app, allowing it to access user data such as profile information, balance, transactions, and more.
@@ -54,7 +45,7 @@ You can configure the specific permissions your app needs directly from the Hand
 
 ![img.png](docs/images/img_1.png)
 
-### Accessing Existing User Accounts
+### Authorisation
 
 To access user accounts, you need to obtain an `authToken`, which is granted when a user authorizes your app.
 
@@ -79,6 +70,20 @@ You can specify the redirect URL, where users are sent after authorizing your ap
 This URL is where you’ll receive the authToken and continue the authentication flow.
 
 ![img_1.png](docs/images/img_3.png)
+
+
+## HandCash SDK
+
+To get started, create an instance of HandCashSDK. This instance serves as the main entry point for interacting with the SDK and accessing its features.
+
+```typescript
+import { getInstance, Connect } from '@handcash/sdk';
+
+const sdk = getInstance({
+  appId: '<APP-ID>',
+  appSecret: '<APP-SECRET>',
+});
+```
 
 ### Get user profile
 
