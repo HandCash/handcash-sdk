@@ -61,6 +61,12 @@ jobs:
             - run:
                 name: Publish package
                 command: npm publish
+      - unless:
+          condition: << pipeline.parameters.run_publish >>
+          steps:
+            - run:
+                name: Skip publish
+                command: circleci-agent step halt "Publishing skipped - run_publish is false"
 
 workflows:
   version: 2
