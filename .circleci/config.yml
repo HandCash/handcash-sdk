@@ -64,7 +64,3 @@ workflows:
       - publish:
           context:
             - npm
-          filters:
-            branches:
-              only:
-                - master
