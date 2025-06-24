@@ -19,7 +19,7 @@ jobs:
             git config –global user.name "HandCash CI Bot"
       - run:
           name: Authenticate npm
-          command: echo “//registry.npmjs.org/:_authToken=$NPM_TOKEN” > ~/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
       - restore_cache:
           keys:
             - v1-npm-{{ checksum "package-lock.json" }}
