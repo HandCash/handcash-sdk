@@ -23,7 +23,7 @@
   "license": "MIT",
   "scripts": {
     "generate-sdk": "node src/cli/connectSdkGenerator.js",
-    "build": "npm run tsc",
+    "build": "tsc",
     "release": "npm run build && changeset publish",
     "release:dry": "npm run build && changeset pre-exit",
     "prepublishOnly": "npm run build",
