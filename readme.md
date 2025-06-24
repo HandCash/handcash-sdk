@@ -36,7 +36,7 @@ To use this SDK, you’ll need an `appId` to identify your application and an `a
 
 ### Installation
 
-`npm i @handcash-sdk`
+`npm i @handcash/sdk`
 
 ### Understanding permissions
 
