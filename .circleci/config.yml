@@ -30,7 +30,10 @@ jobs:
           name: build
           command: npm run build
   publish:
-    when: << pipeline.parameters.run_publish >>
+    when:
+      or:
+        - not: << pipeline.parameters.run_publish >>
+        - equal: [ true, << pipeline.parameters.run_publish >> ]
     docker:
       - image: cimg/node:20.11
     steps:
