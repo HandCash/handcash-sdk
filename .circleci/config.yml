@@ -62,7 +62,7 @@ workflows:
   publish:
     triggers:
       - schedule:
-          cron: "0 0 31 2 *" # Runs never; impossible date prevents auto-run
+          cron: "0 0 31 2 *"
     jobs:
       - publish:
           context:
