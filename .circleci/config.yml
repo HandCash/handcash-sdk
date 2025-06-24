@@ -60,6 +60,8 @@ workflows:
       - publish:
           context:
             - npm
+          requires:
+            - hold
           filters:
             branches:
               only:
