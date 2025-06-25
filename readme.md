@@ -1,4 +1,4 @@
-The HandCash SDK is a server-side Node.js library designed to securely interact with HandCash accounts, enabling features like payments, user profiles, and transaction history.
+The HandCash SDK is a server-side Node.js library designed to securely interact with the HandCash Developer tools and APIs.
 
 For full API reference and detailed usage examples, visit: https://cloud.handcash.io/sdk-docs/
 
@@ -16,9 +16,10 @@ Please see [CHANGES.md](./CHANGES.md) for a list of notable changes and version 
 - [Getting started](#getting-started)
     - [Developer dashboard](#developer-dashboard)
     - [Installation](#installation)
+    - [Initiallization](#initialization)
+- [HandCash Connect](#handcash-connect)
     - [Understanding permissions](#understanding-permissions)
-    - [Authorisation](#authorisation)
-- [SDK](#handcash-sdk)
+    - [User Authorization](#user-authorization)
     - [Get user profile](#get-user-profile)
     - [Get spendable balance](#get-spendable-balances)
     - [Get exchange rate](#get-exchange-rate)
@@ -38,42 +39,7 @@ To use this SDK, you’ll need an `appId` to identify your application and an `a
 
 `npm i @handcash/sdk`
 
-### Understanding permissions
-
-The `authToken` represents the set of permissions granted to your app, allowing it to access user data such as profile information, balance, transactions, and more.
-
-You can configure the specific permissions your app needs directly from the HandCash Developer Dashboard.
-
-![img.png](docs/images/img_1.png)
-
-### Authorisation
-
-To access user accounts, you need to obtain an `authToken`, which is granted when a user authorizes your app.
-
-1. Generate the redirectionUrl that you shall use in your app to send the user to HandCash for authorization:
-
-```typescript
-const redirectionUrl = sdk.getRedirectionUrl();
-```
-
-2. Redirect the user to this URL from your application.
-3. The user will be prompted to authorize your app to access their HandCash account:
-
-![img.png](docs/images/img_2.png)
-
-4. After authorization, the user will be redirected back to your app along with the `authToken`.
-
-```typescript
-const client = sdk.getAccountClient(authToken);
-```
-
-You can specify the redirect URL, where users are sent after authorizing your app, directly in the HandCash Developer Dashboard.
-This URL is where you’ll receive the authToken and continue the authentication flow.
-
-![img_1.png](docs/images/img_3.png)
-
-
-## HandCash SDK
+## Initialization
 
 To get started, create an instance of HandCashSDK. This instance serves as the main entry point for interacting with the SDK and accessing its features.
 
@@ -86,6 +52,45 @@ const sdk = getInstance({
 });
 ```
 
+## HandCash Connect
+HandCash Connect allows users to connect their wallets to your game, allowing you to to access user data such as profile information, balance, transactions, inventory, and more.
+
+### Understanding permissions
+
+The `authToken` represents the set of permissions granted to your app, allowing it to access user data such as profile information, balance, transactions, and more.
+
+You can configure the specific permissions your app needs directly from the HandCash Developer Dashboard.
+
+![img.png](docs/images/img_1.png)
+
+### User Authorization
+
+To access user accounts, you need to obtain an `authToken`, which is granted when a user authorizes your app.
+
+1. Generate the redirectionUrl that you shall use in your app to send the user to HandCash for authorization:
+
+```typescript
+const redirectionUrl = sdk.getRedirectionUrl();
+console.log(redirectionUrl);
+// https://market.handcash.io/connect?appId=661c33e4e0781c633162347f
+```
+
+2. Redirect the user to this URL from your application.
+3. The user will be prompted to authorize your app to access their HandCash account:
+
+![img.png](docs/images/img_2.png)
+
+4. After authorization, the user will be redirected back to your app along with the `authToken`. Example: _https://my.app/auth/success?authToken=333b9370c083446e590dbb3a5e1ffe7aef5eb01a87c3b6ad4d7a4abc7a291602_
+
+```typescript
+const client = sdk.getAccountClient('333b9370c083446e590dbb3a5e1ffe7aef5eb01a87c3b6ad4d7a4abc7a291602');
+```
+
+You can specify the redirect URL, where users are sent after authorizing your app, directly in the HandCash Developer Dashboard.
+This URL is where you’ll receive the authToken and continue the authentication flow.
+
+![img_1.png](docs/images/img_3.png)
+
 ### Get user profile
 
 The code below demonstrates how to retrieve a user’s profile.
@@ -93,6 +98,7 @@ The code below demonstrates how to retrieve a user’s profile.
 ```typescript
 import { Connect } from '@handcash/sdk';
 
+const client = sdk.getAccountClient(authToken);
 const result = await Connect.getCurrentUserProfile({ client });
 ```
 
@@ -103,6 +109,7 @@ Users can set daily spending limits for apps in their preferences.
 ```typescript
 import { Connect } from '@handcash/sdk';
 
+const client = sdk.getAccountClient(authToken);
 const result = await Connect.getSpendableBalances({ client });
 ```
 
@@ -116,7 +123,8 @@ This is possible because certain generic endpoints, like this one, don’t requi
 ```typescript
 import { Connect } from '@handcash/sdk';
 
-const result = await Connect.getExchangeRate({ client: sdk.client, path: { currencyCode: 'USD' } });
+const client = sdk.getAccountClient(authToken);
+const result = await Connect.getExchangeRate({ client: client, path: { currencyCode: 'USD' } });
 ```
 
 ### Transfer money
@@ -128,6 +136,7 @@ In this example, the payment transfers an amount equivalent to 0.01 USD (denomin
 ```typescript
 import { Connect } from '@handcash/sdk';
 
+const client = sdk.getAccountClient(authToken);
 const result = await Connect.pay({
   client,
   body: {
@@ -148,6 +157,8 @@ The HandCash SDK uses a structured error handling approach to help you handle va
 
 ```typescript
 import { getInstance, Connect } from '@handcash/sdk';
+
+const client = sdk.getAccountClient(authToken);
 const result = await Connect.pay({
   client,
   body: {
