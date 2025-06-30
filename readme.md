@@ -61,11 +61,7 @@ const redirectionUrl = sdk.getRedirectionUrl();
 
 ![img.png](docs/images/img_2.png)
 
-4. After authorization, the user will be redirected back to your app along with the `authToken`.
-
-```typescript
-const client = sdk.getAccountClient(authToken);
-```
+4. After authorization, the user will be redirected back to your app along with the `authToken`, which you will use to initialize client from SDK.
 
 You can specify the redirect URL, where users are sent after authorizing your app, directly in the HandCash Developer Dashboard.
 This URL is where you’ll receive the authToken and continue the authentication flow.
@@ -78,12 +74,24 @@ This URL is where you’ll receive the authToken and continue the authentication
 To get started, create an instance of HandCashSDK. This instance serves as the main entry point for interacting with the SDK and accessing its features.
 
 ```typescript
-import { getInstance, Connect } from '@handcash/sdk';
+import { getInstance } from '@handcash/sdk';
 
 const sdk = getInstance({
   appId: '<APP-ID>',
   appSecret: '<APP-SECRET>',
 });
+```
+
+To interact with a specific user’s wallet, use the `authToken` obtained after the redirect:
+
+```typescript
+const client = sdk.getAccountClient(authToken);
+```
+
+For endpoints that are not user-specific, such as fetching exchange rates, you can use the static client:
+
+```typescript
+const globalClient = sdk.client
 ```
 
 ### Get user profile
