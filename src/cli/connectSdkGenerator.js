@@ -8,8 +8,8 @@ async function generateSDK() {
       },
       output: path.join(process.cwd(), 'src/client'),
       operations: {
-         exclude: [
-            { path: '/v1/waas*' }
+         include: [
+            { path: '/v1/connect*' }
          ]
       },
       plugins: [
