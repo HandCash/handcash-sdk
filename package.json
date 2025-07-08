@@ -36,11 +36,11 @@
     "example": "npm run build && node dist/example.js"
   },
   "dependencies": {
-    "@hey-api/client-fetch": "0.13.0",
+    "@hey-api/client-fetch": "0.13.1",
     "@noble/curves": "1.9.2"
   },
   "devDependencies": {
-    "@hey-api/openapi-ts": "0.72.0",
+    "@hey-api/openapi-ts": "0.78.2",
     "@types/node": "^24.0.3",
     "typescript": "5.5.3",
     "@changesets/cli": "2.29.5"
