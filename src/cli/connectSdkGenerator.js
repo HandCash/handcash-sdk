@@ -7,6 +7,11 @@ async function generateSDK() {
          path: 'https://cloud.handcash.io/sdk-docs.json',
       },
       output: path.join(process.cwd(), 'src/client'),
+      operations: {
+         exclude: [
+            { path: '/v1/waas*' }
+         ]
+      },
       plugins: [
          '@hey-api/client-fetch',
          {
