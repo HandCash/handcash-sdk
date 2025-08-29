@@ -1,10 +1,194 @@
 import { createClient, createConfig } from '@hey-api/client-fetch';
 import type { ClientOptions } from './client/index.js';
+import type { Client } from './client/client/types.js';
 import { createHash } from 'node:crypto';
 import { secp256k1 } from '@noble/curves/secp256k1';
 import { PrivKey } from '@noble/curves/abstract/utils';
+import { WalletApi } from './client/sdk.gen.js';
 
 export * from './client/index.js';
+export { Connect, WalletApi } from './client/sdk.gen.js';
+
+/**
+ * HandCash Item Management API
+ * 
+ * Provides a simple interface for managing digital items (NFTs) on the HandCash platform.
+ * All functions require an authenticated client instance.
+ */
+export class Items {
+  /**
+   * Get a single item by its origin
+   * @param client - Authenticated HandCash client instance
+   * @param origin - The origin identifier of the item
+   * @returns Promise containing the item data
+   */
+  static async getByOrigin(client: Client, origin: string) {
+    return WalletApi.getV1WaasItemsByOrigin({
+      client,
+      path: { origin }
+    });
+  }
+
+  /**
+   * Get a single item by its origin (alias for getByOrigin)
+   * @param client - Authenticated HandCash client instance
+   * @param origin - The origin identifier of the item
+   * @returns Promise containing the item data
+   */
+  static async get(client: Client, origin: string) {
+    return WalletApi.getV1WaasItemsByOrigin({
+      client,
+      path: { origin }
+    });
+  }
+
+  /**
+   * Transfer items to another user or address
+   * @param client - Authenticated HandCash client instance
+   * @param items - Array of item origins to transfer
+   * @param destination - HandCash handle or address of the recipient
+   * @returns Promise containing the transfer result
+   */
+  static async transfer(client: Client, items: string[], destination: string) {
+    return WalletApi.postV1WaasItemsTransfer({
+      client,
+      body: {
+        destinationsWithOrigins: [{
+          destination,
+          origins: items
+        }]
+      }
+    });
+  }
+
+  /**
+   * Create and issue new items
+   * @param client - Authenticated HandCash client instance
+   * @param items - Array of item definitions to create
+   * @param collectionId - Optional collection ID to associate with the items
+   * @returns Promise containing the creation result
+   */
+  static async create(client: Client, items: Array<{
+    name: string;
+    description?: string;
+    imageUrl: string;
+    quantity?: number;
+    rarity?: string;
+    color?: string;
+  }>, collectionId?: string) {
+    return WalletApi.postV1WaasItemOrdersIssue({
+      client,
+      body: {
+        itemCreationOrderType: 'collectionItem',
+        referencedCollection: collectionId,
+        items: items.map(item => ({
+          name: item.name,
+          description: item.description,
+          mediaDetails: {
+            image: {
+              url: item.imageUrl,
+              contentType: 'image/png'
+            }
+          },
+          quantity: item.quantity || 1,
+          rarity: item.rarity || 'common',
+          color: item.color || '#000000'
+        }))
+      }
+    });
+  }
+
+  /**
+   * Burn items and create new ones in a single operation
+   * @param client - Authenticated HandCash client instance
+   * @param itemsToBurn - Array of item origins to burn
+   * @param newItems - Array of item definitions to create
+   * @param collectionId - Collection ID for the new items
+   * @returns Promise containing the burn and create result
+   */
+  static async burnAndCreate(client: Client, itemsToBurn: string[], newItems: Array<{
+    name: string;
+    description?: string;
+    imageUrl: string;
+    quantity?: number;
+    rarity?: string;
+    color?: string;
+  }>, collectionId: string) {
+    return WalletApi.postV1WaasItemOrdersBurnAndCreate({
+      client,
+      body: {
+        burn: {
+          origins: itemsToBurn
+        },
+        issue: {
+          items: newItems.map(item => ({
+            name: item.name,
+            description: item.description,
+            mediaDetails: {
+              image: {
+                url: item.imageUrl,
+                contentType: 'image/png'
+              }
+            },
+            quantity: item.quantity || 1,
+            rarity: item.rarity || 'common',
+            color: item.color || '#000000'
+          })),
+          referencedCollection: collectionId,
+          itemCreationOrderType: 'collectionItem'
+        }
+      }
+    });
+  }
+
+  /**
+   * Get items from a creation order
+   * @param client - Authenticated HandCash client instance
+   * @param orderId - The creation order ID
+   * @returns Promise containing the order items
+   */
+  static async getFromOrder(client: Client, orderId: string) {
+    return WalletApi.getV1WaasItemOrdersByItemCreationOrderIdItems({
+      client,
+      path: { itemCreationOrderId: orderId }
+    });
+  }
+
+  /**
+   * Get inventory with optional filters
+   * @param client - Authenticated HandCash client instance
+   * @param options - Optional filters and pagination parameters
+   * @returns Promise containing the inventory data
+   */
+  static async getInventory(client: Client, options?: {
+    from?: number;
+    to?: number;
+    searchString?: string;
+    groupingValue?: string;
+    collectionId?: string;
+    fetchAttributes?: boolean;
+    sort?: 'name';
+    order?: 'asc' | 'desc';
+    attributes?: Array<{
+      name: string;
+      displayType: 'string' | 'number';
+      operation?: 'equal' | 'includes' | 'matches' | 'greater' | 'lower' | 'greaterOrEqual' | 'lowerOrEqual';
+      value?: string | number;
+      values?: Array<string | number>;
+    }>;
+    appId?: string;
+    group?: boolean;
+    externalId?: string;
+  }) {
+    return WalletApi.postV1WaasItems({
+      client,
+      body: {
+        ...options,
+        // This will return all items owned by the authenticated user
+      }
+    });
+  }
+}
 export type ConnectOptions = {
    appSecret: string;
    appId: string;

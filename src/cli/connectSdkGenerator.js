@@ -10,7 +10,7 @@ async function generateSDK() {
       parser: {
          filters: {
             tags: {
-               include: ['Connect'],
+               include: ['Connect', 'Wallet API'],
             },
             preserveOrder: true,
          },

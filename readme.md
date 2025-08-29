@@ -24,6 +24,13 @@ Please see [CHANGES.md](./CHANGES.md) for a list of notable changes and version 
     - [Get spendable balance](#get-spendable-balances)
     - [Get exchange rate](#get-exchange-rate)
     - [Transfer money](#transfer-money)
+- [Item Management](#item-management)
+    - [Get a single item](#get-a-single-item)
+    - [Get inventory](#get-inventory)
+    - [Transfer items](#transfer-items)
+    - [Create new items](#create-new-items)
+    - [Burn and create items](#burn-and-create-items)
+    - [Get items from order](#get-items-from-order)
 - [Error Handling](#error-handling)
     - [Common Error Types](#common-error-types)
 
@@ -147,6 +154,111 @@ const result = await Connect.pay({
       destination: 'nosetwo'
     }]
   }
+});
+```
+
+
+## Item Management
+
+HandCash SDK now supports comprehensive item management functionality, allowing you to create, transfer, and manage digital items (NFTs) on the HandCash platform.
+
+### Get a single item
+
+Retrieve a single item by its origin.
+
+```typescript
+import { Items } from '@handcash/sdk';
+
+const client = sdk.getAccountClient(authToken);
+const result = await Items.getByOrigin(client, 'item-origin');
+```
+
+### Transfer items
+
+Transfer items to another user or address.
+
+```typescript
+import { Items } from '@handcash/sdk';
+
+const client = sdk.getAccountClient(authToken);
+const result = await Items.transfer(client, ['item-origin-1', 'item-origin-2'], 'destination-handle');
+```
+
+### Create new items
+
+Create and issue new digital items to users.
+
+```typescript
+import { Items } from '@handcash/sdk';
+
+const client = sdk.getAccountClient(authToken);
+const result = await Items.create(client, [{
+  name: 'My NFT',
+  description: 'A unique digital item',
+  imageUrl: 'https://example.com/image.png',
+  quantity: 1,
+  rarity: 'common',
+  color: '#FF0000'
+}], 'collection-id');
+```
+
+### Burn and create items
+
+Burn existing items and create new ones in a single operation.
+
+```typescript
+import { Items } from '@handcash/sdk';
+
+const client = sdk.getAccountClient(authToken);
+const result = await Items.burnAndCreate(client, ['item-origin-to-burn'], [{
+  name: 'Upgraded NFT',
+  description: 'An upgraded version',
+  imageUrl: 'https://example.com/upgraded.png',
+  quantity: 1,
+  rarity: 'rare',
+  color: '#00FF00'
+}], 'collection-id');
+```
+
+### Get items from order
+
+Retrieve items associated with a specific item creation order.
+
+```typescript
+import { Items } from '@handcash/sdk';
+
+const client = sdk.getAccountClient(authToken);
+const result = await Items.getFromOrder(client, 'order-id');
+```
+
+### Get inventory
+
+Get inventory with optional filters.
+
+```typescript
+import { Items } from '@handcash/sdk';
+
+const client = sdk.getAccountClient(authToken);
+
+// Basic inventory
+const result = await Items.getInventory(client, {
+  from: 0,
+  to: 50
+});
+
+// Filtered inventory
+const filtered = await Items.getInventory(client, {
+  collectionId: 'my-collection',
+  searchString: 'rare',
+  sort: 'name',
+  order: 'desc',
+  fetchAttributes: true,
+  attributes: [{
+    name: 'rarity',
+    displayType: 'string',
+    operation: 'equal',
+    value: 'legendary'
+  }]
 });
 ```
 
