@@ -1,6 +1,6 @@
 {
   "name": "@handcash/sdk",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.1",
   "description": "Handcash SDK for Node.js",
   "homepage": "https://cloud.handcash.io/sdk-docs",
   "repository": {
