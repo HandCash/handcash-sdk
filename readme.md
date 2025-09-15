@@ -150,6 +150,20 @@ const result = await Connect.pay({
 });
 ```
 
+### Get Items Inventory
+
+The code below demonstrates how to fetch users items inventory for a given application.
+
+In this example, we fetch complete inventory.
+
+Use additional parameters as defined in `GetItemsInventoryData` type for more options.
+
+```typescript
+import { Connect } from '@handcash/sdk';
+
+const client = sdk.getAccountClient(authToken);
+result = await Connect.getItemsInventory({ client, body: {}})
+```
 
 ## Error Handling
 

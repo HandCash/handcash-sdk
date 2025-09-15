@@ -385,7 +385,7 @@ export type GetPaymentDetailsResponses = {
 
 export type GetPaymentDetailsResponse = GetPaymentDetailsResponses[keyof GetPaymentDetailsResponses];
 
-export type PostV3ConnectItemsInventoryData = {
+export type GetItemsInventoryData = {
     body: {
         from?: number;
         to?: number;
@@ -410,14 +410,14 @@ export type PostV3ConnectItemsInventoryData = {
     url: '/v3/connect/items/inventory';
 };
 
-export type PostV3ConnectItemsInventoryResponses = {
+export type GetItemsInventoryResponses = {
     /**
      * OK
      */
     200: ItemsItemsSchema;
 };
 
-export type PostV3ConnectItemsInventoryResponse = PostV3ConnectItemsInventoryResponses[keyof PostV3ConnectItemsInventoryResponses];
+export type GetItemsInventoryResponse = GetItemsInventoryResponses[keyof GetItemsInventoryResponses];
 
 export type ClientOptions = {
     baseUrl: 'https://cloud.handcash.io' | (string & {});

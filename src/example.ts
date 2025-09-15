@@ -34,4 +34,7 @@ const printToConsole = (result: any) => {
       }
    });
    printToConsole(result);
+
+   result = await Connect.getItemsInventory({ client, body: {}})
+   printToConsole(result);
 })();
