@@ -44,6 +44,101 @@ export type ConnectPermissionsSchema = {
     appId: string;
 };
 
+export type ItemsItemsSchema = {
+    items?: Array<{
+        id: string;
+        origin?: string;
+        user?: {
+            id: string;
+            alias: string;
+            displayName: string;
+            profilePictureUrl: string;
+        };
+        collection?: {
+            id: string;
+            isFeatured: boolean;
+            origin: string;
+            name: string;
+            attributes?: Array<{
+                [key: string]: unknown;
+            }>;
+            description: string;
+            imageUrl: string;
+            totalQuantity: number;
+            isHandcashCreated: boolean;
+            isVerified: boolean;
+            isVisibleInMarket: boolean;
+            app?: {
+                id: string;
+                name?: string;
+                iconUrl?: string;
+            };
+        } | {
+            id?: string;
+        };
+        app?: {
+            id: string;
+            name?: string;
+            iconUrl?: string;
+        };
+        name: string;
+        groupingValue: string;
+        description: string;
+        imageUrl: string;
+        multimediaUrl: string;
+        multimediaType: string;
+        rarity: string;
+        color: string;
+        attributes?: Array<{
+            name: string;
+            value?: string | number;
+            displayType: string;
+        }>;
+        isHandcashCreated: boolean;
+        isVerified: boolean;
+        isListing: boolean;
+        itemListing?: {
+            id: string;
+            status: string;
+            paymentRequestUrl: string;
+            paymentRequestId: string;
+            price: number;
+            currencyCode: string;
+            denominatedIn: string;
+            fiatEquivalent?: {
+                amount: number;
+                currencyCode: string;
+            };
+            listedAt: string;
+        };
+        count: number;
+        royalties?: Array<{
+            type: string;
+            percentage: number;
+            destination: string;
+        }>;
+        actions?: Array<{
+            name: string;
+            description: string;
+            url: string;
+            enabled: boolean;
+        }>;
+        isCurrentUser: boolean;
+        floorPriceInUsd?: number;
+        lastSoldPriceInUsd?: number;
+        externalId?: string;
+        priceAlert?: {
+            amountInUSD: number;
+            groupingValue: string;
+            itemName: string;
+            contentUrl: string;
+            collectionName: string;
+            appName: string;
+            active?: boolean;
+        };
+    }>;
+};
+
 export type MiscExchangeRateSchema = {
     exchangeRateVersion: string;
     rate: number;
@@ -289,6 +384,40 @@ export type GetPaymentDetailsResponses = {
 };
 
 export type GetPaymentDetailsResponse = GetPaymentDetailsResponses[keyof GetPaymentDetailsResponses];
+
+export type PostV3ConnectItemsInventoryData = {
+    body: {
+        from?: number;
+        to?: number;
+        collectionIds?: Array<string>;
+        searchString?: string;
+        groupingValue?: string;
+        fetchAttributes?: boolean;
+        sort?: 'name';
+        order?: 'asc' | 'desc';
+        attributes?: Array<{
+            name: string;
+            displayType: 'string' | 'number';
+            operation?: 'equal' | 'includes' | 'matches' | 'greater' | 'lower' | 'greaterOrEqual' | 'lowerOrEqual';
+            value?: string | number;
+            values?: Array<string | number>;
+        }>;
+        group?: boolean;
+        externalId?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v3/connect/items/inventory';
+};
+
+export type PostV3ConnectItemsInventoryResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemsSchema;
+};
+
+export type PostV3ConnectItemsInventoryResponse = PostV3ConnectItemsInventoryResponses[keyof PostV3ConnectItemsInventoryResponses];
 
 export type ClientOptions = {
     baseUrl: 'https://cloud.handcash.io' | (string & {});
