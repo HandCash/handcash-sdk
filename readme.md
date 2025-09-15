@@ -24,6 +24,7 @@ Please see [CHANGES.md](./CHANGES.md) for a list of notable changes and version 
     - [Get spendable balance](#get-spendable-balances)
     - [Get exchange rate](#get-exchange-rate)
     - [Transfer money](#transfer-money)
+    - [Get Items Inventory](#get-items-inventory)
 - [Error Handling](#error-handling)
     - [Common Error Types](#common-error-types)
 
