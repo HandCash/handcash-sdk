@@ -44,6 +44,17 @@ export type ConnectPermissionsSchema = {
     appId: string;
 };
 
+export type ItemsItemCreationOrderSchema = {
+    id: string;
+    user: string;
+    app: string;
+    referencedCollection?: string;
+    type: string;
+    status: string;
+    pendingInscriptions: number;
+    error?: string;
+};
+
 export type ItemsItemsSchema = {
     items?: Array<{
         id: string;
@@ -418,6 +429,371 @@ export type GetItemsInventoryResponses = {
 };
 
 export type GetItemsInventoryResponse = GetItemsInventoryResponses[keyof GetItemsInventoryResponses];
+
+export type GetItemCreationOrderData = {
+    body?: never;
+    path: {
+        itemCreationOrderId: string;
+    };
+    query?: never;
+    url: '/v3/itemCreationOrder/{itemCreationOrderId}';
+};
+
+export type GetItemCreationOrderResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemCreationOrderSchema;
+};
+
+export type GetItemCreationOrderResponse = GetItemCreationOrderResponses[keyof GetItemCreationOrderResponses];
+
+export type GetItemsData = {
+    body?: never;
+    path: {
+        itemCreationOrderId: string;
+    };
+    query?: never;
+    url: '/v3/itemCreationOrder/{itemCreationOrderId}/items';
+};
+
+export type GetItemsResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemsSchema;
+};
+
+export type GetItemsResponse = GetItemsResponses[keyof GetItemsResponses];
+
+export type CreateItemCreationOrderData = {
+    body: {
+        uid?: string;
+        itemCreationOrderType: 'collection' | 'collectionItem';
+        items?: Array<{
+            description?: string;
+            name: string;
+            groupingValue?: string;
+            color?: string;
+            mediaDetails: {
+                image: {
+                    url: string;
+                    imageHighResUrl?: string;
+                    contentType: 'image/png' | 'image/jpg' | 'image/jpeg' | 'image/webp';
+                };
+                multimedia?: {
+                    url: string;
+                    contentType: string;
+                };
+            };
+            user?: string;
+            quantity?: number;
+            rarity?: string;
+            attributes?: Array<{
+                name: string;
+                displayType: string;
+                value?: number | string;
+            }>;
+            actions?: Array<{
+                name: string;
+                description: string;
+                url: string;
+                enabled?: boolean;
+            }>;
+            royalties?: Array<{
+                type: 'paymail' | 'address' | 'script';
+                percentage: number;
+                destination: string;
+            }>;
+            externalId?: string;
+        }> | [
+            {
+                description?: string;
+                name: string;
+                groupingValue?: string;
+                color?: string;
+                mediaDetails: {
+                    image: {
+                        url: string;
+                        imageHighResUrl?: string;
+                        contentType: 'image/png' | 'image/jpg' | 'image/jpeg' | 'image/webp';
+                    };
+                    multimedia?: {
+                        url: string;
+                        contentType: string;
+                    };
+                };
+                user?: string;
+                totalQuantity?: number;
+            }
+        ];
+        referencedCollection?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v3/itemCreationOrder/';
+};
+
+export type CreateItemCreationOrderResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemCreationOrderSchema;
+};
+
+export type CreateItemCreationOrderResponse = CreateItemCreationOrderResponses[keyof CreateItemCreationOrderResponses];
+
+export type AddItemsToItemCreationOrderData = {
+    body: {
+        itemCreationOrderType?: 'collection' | 'collectionItem';
+        items?: Array<{
+            description?: string;
+            name: string;
+            groupingValue?: string;
+            color?: string;
+            mediaDetails: {
+                image: {
+                    url: string;
+                    imageHighResUrl?: string;
+                    contentType: 'image/png' | 'image/jpg' | 'image/jpeg' | 'image/webp';
+                };
+                multimedia?: {
+                    url: string;
+                    contentType: string;
+                };
+            };
+            user?: string;
+            quantity?: number;
+            rarity?: string;
+            attributes?: Array<{
+                name: string;
+                displayType: string;
+                value?: number | string;
+            }>;
+            actions?: Array<{
+                name: string;
+                description: string;
+                url: string;
+                enabled?: boolean;
+            }>;
+            royalties?: Array<{
+                type: 'paymail' | 'address' | 'script';
+                percentage: number;
+                destination: string;
+            }>;
+            externalId?: string;
+        }> | Array<{
+            description?: string;
+            name: string;
+            groupingValue?: string;
+            color?: string;
+            mediaDetails: {
+                image: {
+                    url: string;
+                    imageHighResUrl?: string;
+                    contentType: 'image/png' | 'image/jpg' | 'image/jpeg' | 'image/webp';
+                };
+                multimedia?: {
+                    url: string;
+                    contentType: string;
+                };
+            };
+            user?: string;
+            totalQuantity?: number;
+        }>;
+    };
+    path: {
+        itemCreationOrderId: string;
+    };
+    query?: never;
+    url: '/v3/itemCreationOrder/{itemCreationOrderId}/add';
+};
+
+export type AddItemsToItemCreationOrderResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemCreationOrderSchema;
+};
+
+export type AddItemsToItemCreationOrderResponse = AddItemsToItemCreationOrderResponses[keyof AddItemsToItemCreationOrderResponses];
+
+export type CommitItemCreationOrderData = {
+    body?: never;
+    path: {
+        itemCreationOrderId: string;
+    };
+    query?: never;
+    url: '/v3/itemCreationOrder/{itemCreationOrderId}/commit';
+};
+
+export type CommitItemCreationOrderResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemCreationOrderSchema;
+};
+
+export type CommitItemCreationOrderResponse = CommitItemCreationOrderResponses[keyof CommitItemCreationOrderResponses];
+
+export type CreateBatchData = {
+    body: {
+        itemCreationOrderId: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v3/itemCreationOrder/createBatch';
+};
+
+export type CreateBatchResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemCreationOrderSchema;
+};
+
+export type CreateBatchResponse = CreateBatchResponses[keyof CreateBatchResponses];
+
+export type IssueItemsData = {
+    body: {
+        uid?: string;
+        itemCreationOrderType: 'collection' | 'collectionItem';
+        items?: Array<{
+            description?: string;
+            name: string;
+            groupingValue?: string;
+            color?: string;
+            mediaDetails: {
+                image: {
+                    url: string;
+                    imageHighResUrl?: string;
+                    contentType: 'image/png' | 'image/jpg' | 'image/jpeg' | 'image/webp';
+                };
+                multimedia?: {
+                    url: string;
+                    contentType: string;
+                };
+            };
+            user?: string;
+            quantity?: number;
+            rarity?: string;
+            attributes?: Array<{
+                name: string;
+                displayType: string;
+                value?: number | string;
+            }>;
+            actions?: Array<{
+                name: string;
+                description: string;
+                url: string;
+                enabled?: boolean;
+            }>;
+            royalties?: Array<{
+                type: 'paymail' | 'address' | 'script';
+                percentage: number;
+                destination: string;
+            }>;
+            externalId?: string;
+        }> | [
+            {
+                description?: string;
+                name: string;
+                groupingValue?: string;
+                color?: string;
+                mediaDetails: {
+                    image: {
+                        url: string;
+                        imageHighResUrl?: string;
+                        contentType: 'image/png' | 'image/jpg' | 'image/jpeg' | 'image/webp';
+                    };
+                    multimedia?: {
+                        url: string;
+                        contentType: string;
+                    };
+                };
+                user?: string;
+                totalQuantity?: number;
+            }
+        ];
+        referencedCollection?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v3/itemCreationOrder/issueItems';
+};
+
+export type IssueItemsResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemCreationOrderSchema;
+};
+
+export type IssueItemsResponse = IssueItemsResponses[keyof IssueItemsResponses];
+
+export type BurnAndCreateData = {
+    body: {
+        burn: {
+            origins: Array<string>;
+        };
+        issue?: {
+            items?: Array<{
+                description?: string;
+                name: string;
+                groupingValue?: string;
+                color?: string;
+                mediaDetails: {
+                    image: {
+                        url: string;
+                        imageHighResUrl?: string;
+                        contentType: 'image/png' | 'image/jpg' | 'image/jpeg' | 'image/webp';
+                    };
+                    multimedia?: {
+                        url: string;
+                        contentType: string;
+                    };
+                };
+                user?: string;
+                quantity?: number;
+                rarity?: string;
+                attributes?: Array<{
+                    name: string;
+                    displayType: string;
+                    value?: number | string;
+                }>;
+                actions?: Array<{
+                    name: string;
+                    description: string;
+                    url: string;
+                    enabled?: boolean;
+                }>;
+                royalties?: Array<{
+                    type: 'paymail' | 'address' | 'script';
+                    percentage: number;
+                    destination: string;
+                }>;
+                externalId?: string;
+            }>;
+            referencedCollection: string;
+            uid?: string;
+            itemCreationOrderType?: 'collectionItem';
+        };
+    };
+    path?: never;
+    query?: never;
+    url: '/v3/itemCreationOrder/burnAndCreate';
+};
+
+export type BurnAndCreateResponses = {
+    /**
+     * TODO
+     */
+    200: {
+        '[[TODO]]'?: string;
+    };
+};
+
+export type BurnAndCreateResponse = BurnAndCreateResponses[keyof BurnAndCreateResponses];
 
 export type ClientOptions = {
     baseUrl: 'https://cloud.handcash.io' | (string & {});
