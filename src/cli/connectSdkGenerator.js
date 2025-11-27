@@ -10,7 +10,7 @@ async function generateSDK() {
       parser: {
          filters: {
             tags: {
-               include: ['Connect', 'Minter'],
+               include: ['Connect', 'Minter', 'Payment Requests'],
             },
             preserveOrder: true,
          },

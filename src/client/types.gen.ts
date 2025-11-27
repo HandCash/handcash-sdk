@@ -157,6 +157,138 @@ export type MiscExchangeRateSchema = {
     estimatedExpireDate: string;
 };
 
+export type PaymentRequestPaymentRequestSchema = {
+    id: string;
+    paymentRequestUrl: string;
+    paymentRequestQrCodeUrl: string;
+    status: string;
+    transactionId?: string;
+    redirectUrl: string;
+    expiresAt: string;
+    enabledAt?: string;
+    product: {
+        name: string;
+        description?: string;
+        longDescription?: string;
+        imageUrl: string;
+    };
+    paymentAmount: {
+        currencyCode: string;
+        amount: number;
+        denominatedIn: string;
+    };
+    paymentsCount?: number;
+    shop?: {
+        collectionId: string;
+        packOrder: number;
+        collectionOrder: number;
+        appId: string;
+    };
+    totalUnits?: number;
+    remainingUnits?: number;
+    priceBeforeDiscount?: number;
+};
+
+export type PaymentRequestPaymentRequestStatsSchema = {
+    totalPayments: number;
+    totalVolume: number;
+    uniqueUsers: number;
+};
+
+export type PaymentRequestPrivatePaymentRequestSchema = {
+    id: string;
+    paymentRequestUrl: string;
+    paymentRequestQrCodeUrl: string;
+    isEnabled: boolean;
+    product: {
+        name: string;
+        description?: string;
+        longDescription?: string;
+        imageUrl?: string;
+    };
+    currencyCode: string;
+    receivers: Array<{
+        sendAmount: number;
+        destination: string;
+    }>;
+    totalUnits?: number;
+    remainingUnits?: number;
+    priceBeforeDiscount?: number;
+    paymentAmount: {
+        currencyCode: string;
+        amount: number;
+        denominatedIn: string;
+    };
+    notifications?: {
+        webhook?: {
+            webhookUrl?: string;
+            customParameters?: {
+                [key: string]: never;
+            };
+        };
+        email?: string;
+    };
+    shop?: {
+        collectionId: string;
+        packOrder: number;
+        collectionOrder: number;
+        appId: string;
+    };
+    requestedUserData?: Array<string>;
+    redirectUrl?: string;
+    expiresAt: string;
+    createdAt: string;
+    enabledAt: string;
+};
+
+export type PaymentRequestPrivatePaymentRequestsSchema = {
+    items: Array<{
+        id: string;
+        paymentRequestUrl: string;
+        paymentRequestQrCodeUrl: string;
+        isEnabled: boolean;
+        product: {
+            name: string;
+            description?: string;
+            longDescription?: string;
+            imageUrl?: string;
+        };
+        currencyCode: string;
+        receivers: Array<{
+            sendAmount: number;
+            destination: string;
+        }>;
+        totalUnits?: number;
+        remainingUnits?: number;
+        priceBeforeDiscount?: number;
+        paymentAmount: {
+            currencyCode: string;
+            amount: number;
+            denominatedIn: string;
+        };
+        notifications?: {
+            webhook?: {
+                webhookUrl?: string;
+                customParameters?: {
+                    [key: string]: never;
+                };
+            };
+            email?: string;
+        };
+        shop?: {
+            collectionId: string;
+            packOrder: number;
+            collectionOrder: number;
+            appId: string;
+        };
+        requestedUserData?: Array<string>;
+        redirectUrl?: string;
+        expiresAt: string;
+        createdAt: string;
+        enabledAt: string;
+    }>;
+};
+
 export type WalletAddressSchema = {
     base58Address: string;
     publicKey?: string;
@@ -429,6 +561,200 @@ export type GetItemsInventoryResponses = {
 };
 
 export type GetItemsInventoryResponse = GetItemsInventoryResponses[keyof GetItemsInventoryResponses];
+
+export type GetPaymentRequestsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v3/paymentRequests/';
+};
+
+export type GetPaymentRequestsResponses = {
+    /**
+     * OK
+     */
+    200: PaymentRequestPrivatePaymentRequestsSchema;
+};
+
+export type GetPaymentRequestsResponse = GetPaymentRequestsResponses[keyof GetPaymentRequestsResponses];
+
+export type CreatePaymentRequestData = {
+    body: {
+        product: {
+            name: string;
+            description?: string;
+            longDescription?: string;
+            imageUrl?: string;
+        };
+        instrumentCurrencyCode: 'MNEE' | 'BSV';
+        denominationCurrencyCode?: 'AED' | 'AFN' | 'ALL' | 'AMD' | 'ANG' | 'AOA' | 'ARS' | 'AUD' | 'AWG' | 'AZN' | 'BAM' | 'BBD' | 'BDT' | 'BGN' | 'BHD' | 'BIF' | 'BMD' | 'BND' | 'BOB' | 'BRL' | 'BSD' | 'BTC' | 'BTN' | 'BWP' | 'BYN' | 'BYR' | 'BZD' | 'CAD' | 'CDF' | 'CHF' | 'CLF' | 'CLP' | 'CNY' | 'CNH' | 'COP' | 'CRC' | 'CUC' | 'CUP' | 'CVE' | 'CZK' | 'DJF' | 'DKK' | 'DOP' | 'DZD' | 'EGP' | 'ERN' | 'ETB' | 'EUR' | 'FJD' | 'FKP' | 'GBP' | 'GEL' | 'GGP' | 'GHS' | 'GIP' | 'GMD' | 'GNF' | 'GTQ' | 'GYD' | 'HKD' | 'HNL' | 'HRK' | 'HTG' | 'HUF' | 'IDR' | 'ILS' | 'IMP' | 'INR' | 'IQD' | 'IRR' | 'ISK' | 'JEP' | 'JMD' | 'JOD' | 'JPY' | 'KES' | 'KGS' | 'KHR' | 'KMF' | 'KPW' | 'KRW' | 'KWD' | 'KYD' | 'KZT' | 'LAK' | 'LBP' | 'LKR' | 'LRD' | 'LSL' | 'LTL' | 'LVL' | 'LYD' | 'MAD' | 'MDL' | 'MGA' | 'MKD' | 'MMK' | 'MNT' | 'MOP' | 'MRU' | 'MUR' | 'MVR' | 'MWK' | 'MXN' | 'MYR' | 'MZN' | 'NAD' | 'NGN' | 'NIO' | 'NOK' | 'NPR' | 'NZD' | 'OMR' | 'PAB' | 'PEN' | 'PGK' | 'PHP' | 'PKR' | 'PLN' | 'PYG' | 'QAR' | 'RON' | 'RSD' | 'RUB' | 'RWF' | 'SAR' | 'SBD' | 'SCR' | 'SDG' | 'SEK' | 'SGD' | 'SHP' | 'SLE' | 'SLL' | 'SOS' | 'SRD' | 'STD' | 'SVC' | 'SYP' | 'SZL' | 'THB' | 'TJS' | 'TMT' | 'TND' | 'TOP' | 'TRY' | 'TTD' | 'TWD' | 'TZS' | 'UAH' | 'UGX' | 'USD' | 'UYU' | 'UZS' | 'VES' | 'VND' | 'VUV' | 'WST' | 'XAF' | 'XAG' | 'XAU' | 'XCD' | 'XDR' | 'XOF' | 'XPF' | 'YER' | 'ZAR' | 'ZMK' | 'ZMW' | 'ZWL';
+        receivers: Array<{
+            sendAmount: number;
+            destination: string;
+            tags?: Array<string>;
+        }>;
+        requestedUserData?: Array<'paymail' | 'email' | 'phoneNumber'>;
+        paymentMethods?: Array<'onChain' | 'externalPaymentProcessor'>;
+        redirectUrl?: string;
+        notifications?: {
+            webhook?: {
+                webhookUrl: string;
+                customParameters?: {
+                    [key: string]: never;
+                };
+            };
+            email?: string;
+        };
+        totalUnits?: number;
+        /**
+         * @deprecated
+         */
+        expirationInSeconds?: number;
+        expirationType?: string;
+        /**
+         * @deprecated
+         */
+        expiresAt?: string;
+        enabledAt?: string;
+        priceBeforeDiscount?: number;
+        shop?: {
+            collectionId: string;
+            packOrder: number;
+            collectionOrder: number;
+        };
+    };
+    path?: never;
+    query?: never;
+    url: '/v3/paymentRequests/';
+};
+
+export type CreatePaymentRequestResponses = {
+    /**
+     * OK
+     */
+    200: PaymentRequestPrivatePaymentRequestSchema;
+};
+
+export type CreatePaymentRequestResponse = CreatePaymentRequestResponses[keyof CreatePaymentRequestResponses];
+
+export type DeletePaymentRequestData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v3/paymentRequests/{id}';
+};
+
+export type DeletePaymentRequestResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type GetPaymentRequestData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v3/paymentRequests/{id}';
+};
+
+export type GetPaymentRequestResponses = {
+    /**
+     * OK
+     */
+    200: PaymentRequestPrivatePaymentRequestSchema;
+};
+
+export type GetPaymentRequestResponse = GetPaymentRequestResponses[keyof GetPaymentRequestResponses];
+
+export type UpdatePaymentRequestData = {
+    body: {
+        product?: {
+            name?: string;
+            description?: string;
+            longDescription?: string;
+            imageUrl?: string;
+        };
+        redirectUrl?: string;
+        notifications?: {
+            webhook?: {
+                webhookUrl?: string;
+                customParameters?: {
+                    [key: string]: never;
+                };
+            };
+            email?: string;
+        };
+        /**
+         * @deprecated
+         */
+        expirationInSeconds?: number;
+        expiresAt?: string;
+        decreaseRemainingUnits?: number;
+        priceBeforeDiscount?: number | null;
+        shop?: {
+            collectionId: string;
+            packOrder: number;
+            collectionOrder: number;
+        };
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v3/paymentRequests/{id}';
+};
+
+export type UpdatePaymentRequestResponses = {
+    /**
+     * OK
+     */
+    200: PaymentRequestPrivatePaymentRequestSchema;
+};
+
+export type UpdatePaymentRequestResponse = UpdatePaymentRequestResponses[keyof UpdatePaymentRequestResponses];
+
+export type GetPaymentRequestsPublicInfoData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        referenceId?: string;
+    };
+    url: '/v3/paymentRequests/public/{id}';
+};
+
+export type GetPaymentRequestsPublicInfoResponses = {
+    /**
+     * OK
+     */
+    200: PaymentRequestPaymentRequestSchema;
+};
+
+export type GetPaymentRequestsPublicInfoResponse = GetPaymentRequestsPublicInfoResponses[keyof GetPaymentRequestsPublicInfoResponses];
+
+export type GetPaymentRequestsPublicStatsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v3/paymentRequests/public/stats/{id}';
+};
+
+export type GetPaymentRequestsPublicStatsResponses = {
+    /**
+     * OK
+     */
+    200: PaymentRequestPaymentRequestStatsSchema;
+};
+
+export type GetPaymentRequestsPublicStatsResponse = GetPaymentRequestsPublicStatsResponses[keyof GetPaymentRequestsPublicStatsResponses];
 
 export type GetItemCreationOrderData = {
     body?: never;
