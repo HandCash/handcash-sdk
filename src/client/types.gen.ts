@@ -39,9 +39,121 @@ export type AccountFullUserProfileSchema = {
     };
 };
 
+export type AccountProfileApiDefinition = {
+    alias: string;
+    displayName?: string;
+    profilePictureUrl?: string;
+    id?: string;
+};
+
+export type AccountProfilesSchema = {
+    items: Array<{
+        alias: string;
+        displayName?: string;
+        profilePictureUrl?: string;
+        id?: string;
+    }>;
+};
+
+export type ApplicationApplicationsSchema = {
+    items: Array<{
+        id: string;
+        name: string;
+        longDescription?: string;
+        shortDescription?: string;
+        iconUrl?: string;
+        bannerUrl?: string;
+        publisherEmail?: string;
+        appWebsiteUrl?: string;
+        appAndroidUrl?: string;
+        appAppleUrl?: string;
+        privacyPolicyUrl?: string;
+        screenUrls: Array<string>;
+        permissions?: Array<'USER_PRIVATE_PROFILE' | 'USER_PUBLIC_PROFILE' | 'PAY' | 'FRIENDS' | 'DECRYPT' | 'SIGN_DATA' | 'OWNERSHIP' | 'ITEMS_READ' | 'ITEMS_WRITE' | 'READ_BALANCE' | 'READ_TRANSACTIONS' | 'GENERATE_ADDRESS' | 'ITEM_ISSUE' | 'DEVICE_ADMIN' | 'SIGNUP'>;
+        authenticationSuccessUrl?: string;
+        authenticationDeclineUrl?: string;
+        isUserConnected: boolean;
+        hasShopItems: boolean;
+        isAppExtension: boolean;
+        isPromotedOnMarket: boolean;
+        isFeaturedOnMarket: boolean;
+        extensions: Array<{
+            id: string;
+            name?: string;
+            iconUrl?: string;
+            authorizationSuccessWebhook?: string;
+            permissions?: Array<string>;
+        }>;
+    }>;
+};
+
 export type ConnectPermissionsSchema = {
     items: Array<'USER_PRIVATE_PROFILE' | 'USER_PUBLIC_PROFILE' | 'PAY' | 'READ_BALANCE' | 'GENERATE_ADDRESS' | 'READ_TRANSACTIONS' | 'ITEMS_READ' | 'ITEMS_WRITE'>;
     appId: string;
+};
+
+export type ItemsCollectionSchema = {
+    id: string;
+    isFeatured: boolean;
+    origin: string;
+    name: string;
+    attributes?: Array<{
+        [key: string]: unknown;
+    }>;
+    description: string;
+    imageUrl: string;
+    totalQuantity: number;
+    isHandcashCreated: boolean;
+    isVerified: boolean;
+    isVisibleInMarket: boolean;
+    app?: {
+        id: string;
+        name?: string;
+        iconUrl?: string;
+    };
+};
+
+export type ItemsCollectionsSchema = {
+    featured?: Array<{
+        id: string;
+        isFeatured: boolean;
+        origin: string;
+        name: string;
+        attributes?: Array<{
+            [key: string]: unknown;
+        }>;
+        description: string;
+        imageUrl: string;
+        totalQuantity: number;
+        isHandcashCreated: boolean;
+        isVerified: boolean;
+        isVisibleInMarket: boolean;
+        app?: {
+            id: string;
+            name?: string;
+            iconUrl?: string;
+        };
+    }>;
+    others?: Array<{
+        id: string;
+        isFeatured: boolean;
+        origin: string;
+        name: string;
+        attributes?: Array<{
+            [key: string]: unknown;
+        }>;
+        description: string;
+        imageUrl: string;
+        totalQuantity: number;
+        isHandcashCreated: boolean;
+        isVerified: boolean;
+        isVisibleInMarket: boolean;
+        app?: {
+            id: string;
+            name?: string;
+            iconUrl?: string;
+        };
+    }>;
 };
 
 export type ItemsItemCreationOrderSchema = {
@@ -53,6 +165,107 @@ export type ItemsItemCreationOrderSchema = {
     status: string;
     pendingInscriptions: number;
     error?: string;
+};
+
+export type ItemsItemMetricsSchema = {
+    itemsSold: number;
+    volumeInUSD: number;
+    numberOfActiveListings: number;
+    numberOfOwners: number;
+    supply: number;
+};
+
+export type ItemsItemSchema = {
+    id: string;
+    origin?: string;
+    user?: {
+        id: string;
+        alias: string;
+        displayName: string;
+        profilePictureUrl: string;
+    };
+    collection?: {
+        id: string;
+        isFeatured: boolean;
+        origin: string;
+        name: string;
+        attributes?: Array<{
+            [key: string]: unknown;
+        }>;
+        description: string;
+        imageUrl: string;
+        totalQuantity: number;
+        isHandcashCreated: boolean;
+        isVerified: boolean;
+        isVisibleInMarket: boolean;
+        app?: {
+            id: string;
+            name?: string;
+            iconUrl?: string;
+        };
+    } | {
+        id?: string;
+    };
+    app?: {
+        id: string;
+        name?: string;
+        iconUrl?: string;
+    };
+    name: string;
+    groupingValue: string;
+    description: string;
+    imageUrl: string;
+    multimediaUrl: string;
+    multimediaType: string;
+    rarity: string;
+    color: string;
+    attributes?: Array<{
+        name: string;
+        value?: string | number;
+        displayType: string;
+    }>;
+    isHandcashCreated: boolean;
+    isVerified: boolean;
+    isListing: boolean;
+    itemListing?: {
+        id: string;
+        status: string;
+        paymentRequestUrl: string;
+        paymentRequestId: string;
+        price: number;
+        currencyCode: string;
+        denominatedIn: string;
+        fiatEquivalent?: {
+            amount: number;
+            currencyCode: string;
+        };
+        listedAt: string;
+    };
+    count: number;
+    royalties?: Array<{
+        type: string;
+        percentage: number;
+        destination: string;
+    }>;
+    actions?: Array<{
+        name: string;
+        description: string;
+        url: string;
+        enabled: boolean;
+    }>;
+    isCurrentUser: boolean;
+    floorPriceInUsd?: number;
+    lastSoldPriceInUsd?: number;
+    externalId?: string;
+    priceAlert?: {
+        amountInUSD: number;
+        groupingValue: string;
+        itemName: string;
+        contentUrl: string;
+        collectionName: string;
+        appName: string;
+        active?: boolean;
+    };
 };
 
 export type ItemsItemsSchema = {
@@ -146,6 +359,36 @@ export type ItemsItemsSchema = {
             collectionName: string;
             appName: string;
             active?: boolean;
+        };
+    }>;
+};
+
+export type ItemsItemStatsSchema = {
+    listingsCount: number;
+    itemsCount: number;
+};
+
+export type ItemsItemTradeHistorySchema = {
+    items?: Array<{
+        date: string;
+        totalVolumeInUSD: number;
+        averagePriceInUSD: number;
+    }>;
+};
+
+export type ItemsItemTransferSchema = {
+    items?: Array<{
+        itemName?: string;
+        collectionName?: string;
+        contentUrl?: string;
+        operation: string;
+        origin: string;
+        groupingValue: string;
+        amountInUSD?: number;
+        paymentTransactionId?: string;
+        createdAt: string;
+        participant: {
+            [key: string]: never;
         };
     }>;
 };
@@ -561,6 +804,56 @@ export type GetItemsInventoryResponses = {
 };
 
 export type GetItemsInventoryResponse = GetItemsInventoryResponses[keyof GetItemsInventoryResponses];
+
+export type GetV3FriendsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v3/friends/';
+};
+
+export type GetV3FriendsResponses = {
+    /**
+     * OK
+     */
+    200: AccountProfilesSchema;
+};
+
+export type GetV3FriendsResponse = GetV3FriendsResponses[keyof GetV3FriendsResponses];
+
+export type PostV3FriendsData = {
+    body: {
+        alias: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v3/friends/';
+};
+
+export type PostV3FriendsResponses = {
+    /**
+     * OK
+     */
+    200: AccountProfileApiDefinition;
+};
+
+export type PostV3FriendsResponse = PostV3FriendsResponses[keyof PostV3FriendsResponses];
+
+export type DeleteV3FriendsByIdData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v3/friends/{id}';
+};
+
+export type DeleteV3FriendsByIdResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type GetPaymentRequestsData = {
     body?: never;
@@ -1121,6 +1414,351 @@ export type BurnAndCreateResponses = {
 
 export type BurnAndCreateResponse = BurnAndCreateResponses[keyof BurnAndCreateResponses];
 
+export type PostV3WalletItemsInventoryData = {
+    body: {
+        from?: number;
+        to?: number;
+        /**
+         * @deprecated
+         */
+        collectionId?: string;
+        collectionIds?: Array<string>;
+        searchString?: string;
+        groupingValue?: string;
+        fetchAttributes?: boolean;
+        sort?: 'name';
+        order?: 'asc' | 'desc';
+        attributes?: Array<{
+            name: string;
+            displayType: 'string' | 'number';
+            operation?: 'equal' | 'includes' | 'matches' | 'greater' | 'lower' | 'greaterOrEqual' | 'lowerOrEqual';
+            value?: string | number;
+            values?: Array<string | number>;
+        }>;
+        appId?: string;
+        group?: boolean;
+        externalId?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/v3/wallet/items/inventory';
+};
+
+export type PostV3WalletItemsInventoryResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemsSchema;
+};
+
+export type PostV3WalletItemsInventoryResponse = PostV3WalletItemsInventoryResponses[keyof PostV3WalletItemsInventoryResponses];
+
+export type GetV3WalletItemsInventoryStatsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        groupingValue?: string;
+        applicationId?: string;
+    };
+    url: '/v3/wallet/items/inventory/stats';
+};
+
+export type GetV3WalletItemsInventoryStatsResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemStatsSchema;
+};
+
+export type GetV3WalletItemsInventoryStatsResponse = GetV3WalletItemsInventoryStatsResponses[keyof GetV3WalletItemsInventoryStatsResponses];
+
+export type GetV3WalletItemsInventoryApplicationsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v3/wallet/items/inventory/applications';
+};
+
+export type GetV3WalletItemsInventoryApplicationsResponses = {
+    /**
+     * OK
+     */
+    200: ApplicationApplicationsSchema;
+};
+
+export type GetV3WalletItemsInventoryApplicationsResponse = GetV3WalletItemsInventoryApplicationsResponses[keyof GetV3WalletItemsInventoryApplicationsResponses];
+
+export type GetV3WalletItemsHistoryApplicationsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/v3/wallet/items/history/applications';
+};
+
+export type GetV3WalletItemsHistoryApplicationsResponses = {
+    /**
+     * OK
+     */
+    200: ApplicationApplicationsSchema;
+};
+
+export type GetV3WalletItemsHistoryApplicationsResponse = GetV3WalletItemsHistoryApplicationsResponses[keyof GetV3WalletItemsHistoryApplicationsResponses];
+
+export type GetV3WalletItemsTopTradedData = {
+    body?: never;
+    path?: never;
+    query?: {
+        applicationId?: string;
+        count?: number;
+    };
+    url: '/v3/wallet/items/topTraded';
+};
+
+export type GetV3WalletItemsTopTradedResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemsSchema;
+};
+
+export type GetV3WalletItemsTopTradedResponse = GetV3WalletItemsTopTradedResponses[keyof GetV3WalletItemsTopTradedResponses];
+
+export type GetV3WalletItemsTradeHistoryData = {
+    body?: never;
+    path?: never;
+    query: {
+        fromDate: string;
+        toDate: string;
+        groupingValue: string;
+    };
+    url: '/v3/wallet/items/tradeHistory';
+};
+
+export type GetV3WalletItemsTradeHistoryResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemTradeHistorySchema;
+};
+
+export type GetV3WalletItemsTradeHistoryResponse = GetV3WalletItemsTradeHistoryResponses[keyof GetV3WalletItemsTradeHistoryResponses];
+
+export type GetV3WalletItemsMetricsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        groupingValue?: string;
+        applicationId?: string;
+    };
+    url: '/v3/wallet/items/metrics';
+};
+
+export type GetV3WalletItemsMetricsResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemMetricsSchema;
+};
+
+export type GetV3WalletItemsMetricsResponse = GetV3WalletItemsMetricsResponses[keyof GetV3WalletItemsMetricsResponses];
+
+export type PostV3WalletItemsSendData = {
+    body: {
+        destinationsWithOrigins: Array<{
+            destination: string;
+            origins: Array<string>;
+        }>;
+    };
+    path?: never;
+    query?: never;
+    url: '/v3/wallet/items/send';
+};
+
+export type PostV3WalletItemsSendResponses = {
+    /**
+     * TODO
+     */
+    200: {
+        '[[TODO]]'?: string;
+    };
+};
+
+export type PostV3WalletItemsSendResponse = PostV3WalletItemsSendResponses[keyof PostV3WalletItemsSendResponses];
+
+export type PostV3WalletItemsLockByOriginData = {
+    body?: never;
+    path: {
+        origin: string;
+    };
+    query?: never;
+    url: '/v3/wallet/items/lock/{origin}';
+};
+
+export type PostV3WalletItemsLockByOriginResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type PostV3WalletItemsUnlockByOriginData = {
+    body?: never;
+    path: {
+        origin: string;
+    };
+    query?: never;
+    url: '/v3/wallet/items/unlock/{origin}';
+};
+
+export type PostV3WalletItemsUnlockByOriginResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type GetV3WalletItemsLockedData = {
+    body?: never;
+    path?: never;
+    query?: {
+        from?: number;
+        to?: number;
+        fetchAttributes?: boolean;
+    };
+    url: '/v3/wallet/items/locked';
+};
+
+export type GetV3WalletItemsLockedResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemsSchema;
+};
+
+export type GetV3WalletItemsLockedResponse = GetV3WalletItemsLockedResponses[keyof GetV3WalletItemsLockedResponses];
+
+export type GetV3WalletItemsCollectionsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        appId?: string;
+    };
+    url: '/v3/wallet/items/collections';
+};
+
+export type GetV3WalletItemsCollectionsResponses = {
+    /**
+     * OK
+     */
+    200: ItemsCollectionsSchema;
+};
+
+export type GetV3WalletItemsCollectionsResponse = GetV3WalletItemsCollectionsResponses[keyof GetV3WalletItemsCollectionsResponses];
+
+export type GetV3WalletItemsCollectionByIdData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/v3/wallet/items/collection/{id}';
+};
+
+export type GetV3WalletItemsCollectionByIdResponses = {
+    /**
+     * OK
+     */
+    200: ItemsCollectionSchema;
+};
+
+export type GetV3WalletItemsCollectionByIdResponse = GetV3WalletItemsCollectionByIdResponses[keyof GetV3WalletItemsCollectionByIdResponses];
+
+export type PutV3WalletItemsCollectionByCollectionIdData = {
+    body?: never;
+    path: {
+        collectionId: string;
+    };
+    query?: never;
+    url: '/v3/wallet/items/collection/{collectionId}';
+};
+
+export type PutV3WalletItemsCollectionByCollectionIdResponses = {
+    /**
+     * OK
+     */
+    200: ItemsCollectionSchema;
+};
+
+export type PutV3WalletItemsCollectionByCollectionIdResponse = PutV3WalletItemsCollectionByCollectionIdResponses[keyof PutV3WalletItemsCollectionByCollectionIdResponses];
+
+export type PostV3WalletItemsHistoryData = {
+    body: {
+        from?: number;
+        to?: number;
+        searchString?: string;
+        groupingValue?: string;
+        sort?: 'priceInUSD' | 'itemName' | 'createdAt';
+        order?: 'asc' | 'desc';
+        attributes?: Array<{
+            name: string;
+            displayType: 'string' | 'number';
+            operation?: 'equal' | 'includes' | 'matches' | 'greater' | 'lower' | 'greaterOrEqual' | 'lowerOrEqual';
+            value?: string | number;
+            values?: Array<string | number>;
+        }>;
+        collectionIds?: Array<string>;
+        appIds?: Array<string>;
+    };
+    path?: never;
+    query?: never;
+    url: '/v3/wallet/items/history';
+};
+
+export type PostV3WalletItemsHistoryResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemTransferSchema;
+};
+
+export type PostV3WalletItemsHistoryResponse = PostV3WalletItemsHistoryResponses[keyof PostV3WalletItemsHistoryResponses];
+
+export type GetV3WalletItemsByOriginData = {
+    body?: never;
+    path: {
+        origin: string;
+    };
+    query?: never;
+    url: '/v3/wallet/items/{origin}';
+};
+
+export type GetV3WalletItemsByOriginResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemSchema;
+};
+
+export type GetV3WalletItemsByOriginResponse = GetV3WalletItemsByOriginResponses[keyof GetV3WalletItemsByOriginResponses];
+
+export type GetV3WalletItemsDefinitionByGroupingValueData = {
+    body?: never;
+    path: {
+        groupingValue: string;
+    };
+    query?: never;
+    url: '/v3/wallet/items/definition/{groupingValue}';
+};
+
+export type GetV3WalletItemsDefinitionByGroupingValueResponses = {
+    /**
+     * OK
+     */
+    200: ItemsItemSchema;
+};
+
+export type GetV3WalletItemsDefinitionByGroupingValueResponse = GetV3WalletItemsDefinitionByGroupingValueResponses[keyof GetV3WalletItemsDefinitionByGroupingValueResponses];
+
 export type ClientOptions = {
-    baseUrl: 'https://cloud.handcash.io' | (string & {});
+    baseUrl: `file://${string}` | (string & {});
 };

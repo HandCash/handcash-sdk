@@ -12,6 +12,8 @@ To pull in new endpoints (e.g. Wallet Items, Friends) **without** waiting for a 
 
 If `spec/sdkOpenapi.json` is missing, the generator falls back to `https://cloud.handcash.io/sdk-docs.json`.
 
+The generator includes operations tagged **Connect**, **Minter**, **Payment Requests**, **Items**, and **Users** (spec tag names). That yields classes `Connect`, `Minter`, `PaymentRequests`, `Items` (e.g. `postV3WalletItemsSend`, `postV3WalletItemsLockByOrigin`, `getV3WalletItemsLocked`), and `Users` (e.g. `getV3Friends`, `postV3Friends`).
+
 ## Change log
 
 Please see [CHANGES.md](./CHANGES.md) for a list of notable changes and version history.

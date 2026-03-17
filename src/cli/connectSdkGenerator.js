@@ -21,7 +21,7 @@ async function generateSDK() {
       parser: {
          filters: {
             tags: {
-               include: ['Connect', 'Minter', 'Payment Requests', 'Wallet Items', 'Friends'],
+               include: ['Connect', 'Minter', 'Payment Requests', 'Items', 'Users'],
             },
             preserveOrder: true,
          },
