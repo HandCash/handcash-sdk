@@ -2,6 +2,16 @@ The HandCash SDK is a server-side Node.js library designed to securely interact 
 
 For full API reference and detailed usage examples, visit: https://cloud.handcash.io/sdk-docs/
 
+## Regenerating the SDK (e.g. without deploying cloud)
+
+To pull in new endpoints (e.g. Wallet Items, Friends) **without** waiting for a cloud deploy:
+
+1. In the **handcash-cloud** repo run `npm run doc-build`. That writes `docs/sdkOpenapi.json`.
+2. Copy `handcash-cloud/docs/sdkOpenapi.json` into this repo as `spec/sdkOpenapi.json` (create `spec/` if needed).
+3. Run `npm run generate-sdk`, then `npm run build`.
+
+If `spec/sdkOpenapi.json` is missing, the generator falls back to `https://cloud.handcash.io/sdk-docs.json`.
+
 ## Change log
 
 Please see [CHANGES.md](./CHANGES.md) for a list of notable changes and version history.
