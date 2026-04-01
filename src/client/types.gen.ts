@@ -1624,6 +1624,10 @@ export type GetV3WalletItemsLockedData = {
         from?: number;
         to?: number;
         fetchAttributes?: boolean;
+        /**
+         * When set, only locked items whose owner (referencedUserId) matches this HandCash user id are returned.
+         */
+        userId?: string;
     };
     url: '/v3/wallet/items/locked';
 };
