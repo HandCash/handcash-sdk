@@ -1032,7 +1032,7 @@ export class Items {
     }
     
     /**
-     * Fetch all locked items for the app.
+     * Fetch locked items for the app. Pass query `userId` to return only items owned by that HandCash user.
      */
     public static getV3WalletItemsLocked<ThrowOnError extends boolean = false>(options?: Options<GetV3WalletItemsLockedData, ThrowOnError>) {
         return (options?.client ?? _heyApiClient).get<GetV3WalletItemsLockedResponses, unknown, ThrowOnError>({
