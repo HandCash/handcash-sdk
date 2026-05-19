@@ -1,0 +1,28 @@
+# Self-custody wallets
+
+The self-custody flow lets you register a wallet you control (extended public key) instead of a HandCash-hosted embedded key from email onboarding.
+
+## Create account
+
+```http
+POST /v1/waas/account/selfCustodial
+```
+
+**Headers:** `app-id`, `app-secret`
+
+```json
+{
+  "walletExtendedPublicKey": "<your-wallet-xpub>",
+  "alias": "optional_alias"
+}
+```
+
+## Wallet operations
+
+Self-custody wallet routes live under `/v1/waas/wallet/selfCustody/*` (pay template, broadcast, balances, transactions, deposit info).
+
+Authenticate with the **`wallet-xpub`** header set to the same extended public key registered for the user — not the OAuth signing headers used for standard embedded wallets.
+
+See [cloud.handcash.io/sdk-docs](https://cloud.handcash.io/sdk-docs/) (**Wallet API** tag) for each endpoint’s request and response schemas.
+
+[Standard embedded wallets →](/wallet-api/account-onboarding)

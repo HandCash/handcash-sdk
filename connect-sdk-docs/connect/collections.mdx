@@ -1,0 +1,69 @@
+# Collections
+
+Collections group digital items. In v3 the flow is split the same way the API is: **wallet** endpoints list and manage visibility; **creating** a new collection is a **minting** (item creation order) step.
+
+## List and inspect collections (wallet)
+
+Use the **`Items`** class with the user’s signed client (`getAccountClient`):
+
+```javascript
+import { getInstance, Items } from '@handcash/sdk';
+
+const sdk = getInstance({ appId, appSecret });
+const client = sdk.getAccountClient(authToken);
+
+// All collections the user can see in this context
+const { data, error } = await Items.getV3WalletItemsCollections({ client });
+if (error) throw new Error(error.message);
+
+// One collection by id
+const { data: one, error: err2 } = await Items.getV3WalletItemsCollectionById({
+  client,
+  path: { id: collectionId },
+});
+```
+
+## Deactivate a collection
+
+```javascript
+const { data, error } = await Items.putV3WalletItemsCollectionByCollectionId({
+  client,
+  path: { collectionId },
+});
+```
+
+Exact path/query parameters follow the [Cloud SDK API](https://cloud.handcash.io/sdk-docs/).
+
+## Create a new collection (minting)
+
+There is **no** `POST /v3/wallet/items/collections` in the API. Creating a collection uses the **item creation order** flow — the **`Minter`** class — with **`itemCreationOrderType: 'collection'`** and exactly **one** item payload describing the collection (name, media, etc.):
+
+```javascript
+import { getInstance, Minter } from '@handcash/sdk';
+
+const sdk = getInstance({ appId, appSecret });
+const client = sdk.getAccountClient(authToken);
+
+const { data, error } = await Minter.createItemCreationOrder({
+  client,
+  body: {
+    itemCreationOrderType: 'collection',
+    items: [
+      {
+        name: 'My Game Collection',
+        description: 'Optional description',
+        mediaDetails: {
+          image: {
+            url: 'https://example.com/collection-cover.png',
+            contentType: 'image/png',
+          },
+        },
+      },
+    ],
+  },
+});
+```
+
+You typically **commit** the order and follow your usual minting steps (see [Minting & burn](/connect/minting-and-burn)). Use the **collection id** returned from completed flows when [creating items](https://docs.handcash.io/v3/items/creation.md) that belong to that collection.
+
+**Permissions:** minting uses the same **business / issue** style permissions as the rest of `Minter`; wallet collection reads use normal item read permissions for the user client. Check the OpenAPI `security` for each operation in [sdk-docs](https://cloud.handcash.io/sdk-docs/).

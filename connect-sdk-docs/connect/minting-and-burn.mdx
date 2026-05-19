@@ -1,0 +1,58 @@
+# Minting, issue, and burn (Minter)
+
+Legacy v2 docs described **burn** and **burn-and-create** on the old Connect client. In v3 those operations live on **`/v3/itemCreationOrder/...`** and are exposed on the SDK as the **`Minter`** class.
+
+You need a client authorized for **item creation / signing** (usually the **business wallet** or app flow your dashboard uses for minting), not only a casual Connect user session. Confirm required scopes in the [Cloud SDK API](https://cloud.handcash.io/sdk-docs/).
+
+## Create an item creation order
+
+Start orders for **`collection`** (new collection) or **`collectionItem`** (items inside a collection):
+
+```javascript
+import { getInstance, Minter } from '@handcash/sdk';
+
+const sdk = getInstance({ appId, appSecret });
+const client = sdk.getAccountClient(authToken);
+
+const { data, error } = await Minter.createItemCreationOrder({
+  client,
+  body: {
+    itemCreationOrderType: 'collectionItem',
+    referencedCollection: 'YOUR_COLLECTION_ID',
+    items: [/* see OpenAPI for full item shape */],
+  },
+});
+```
+
+For **`collection`** type (new collection only), see [Collections → Create](/connect/collections#create-a-new-collection-minting).
+
+## Add items, commit, batches, issue
+
+Typical sequence (names only — see OpenAPI for bodies):
+
+- `Minter.addItemsToItemCreationOrder`
+- `Minter.commitItemCreationOrder`
+- `Minter.createBatch`
+- `Minter.issueItems` — full issue pipeline when appropriate
+
+## Burn and create (crafting)
+
+Single operation that burns existing item origins and optionally issues new items:
+
+```javascript
+const { data, error } = await Minter.burnAndCreate({
+  client,
+  body: {
+    burn: { origins: ['origin1', 'origin2'] },
+    issue: {
+      items: [/* new items; optional depending on API contract */],
+    },
+  },
+});
+```
+
+The exact **`body`** shape is defined in TypeScript (`BurnAndCreateData`) and in [sdk-docs](https://cloud.handcash.io/sdk-docs/) for `POST /v3/itemCreationOrder/burnAndCreate`.
+
+## Burn-only
+
+If you only need to destroy items without minting replacements, use the **issue** / order APIs that match your product flow (see OpenAPI for `issueItems` and related operations). The generated **`Minter`** methods mirror those endpoints.

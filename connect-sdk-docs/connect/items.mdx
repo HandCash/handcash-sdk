@@ -1,0 +1,80 @@
+# Items
+
+Work with the user’s inventory: list items, transfer them, lock/unlock, and related wallet-item APIs. Methods return `{ data, error }`; always check `error` first.
+
+- **`Connect`** — `/v3/connect/items/inventory` (simple inventory for Connect docs and many apps).
+- **`Items`** — `/v3/wallet/items/...` (full wallet surface: send, lock, collections, stats, history, etc.).
+
+If you are migrating from v2, start with [Migration from v2](/connect/migration-from-v2).
+
+## Inventory (Connect)
+
+```javascript
+import { getInstance, Connect } from '@handcash/sdk';
+
+const sdk = getInstance({ appId, appSecret });
+const client = sdk.getAccountClient(authToken);
+
+const { data, error } = await Connect.getItemsInventory({
+  client,
+  body: {
+    from: 0,
+    to: 500,
+    fetchAttributes: true,
+  },
+});
+
+if (error) throw new Error(error.message);
+const items = data?.items ?? [];
+```
+
+For richer filtering (search, collection filter, `group: false`, etc.), use **`Items.postV3WalletItemsInventory`** — see [Cloud SDK API](https://cloud.handcash.io/sdk-docs/) for `POST /v3/wallet/items/inventory`.
+
+## Transfer items
+
+```javascript
+import { Items } from '@handcash/sdk';
+
+const { data, error } = await Items.postV3WalletItemsSend({
+  client,
+  body: {
+    /* destinations + origins — see OpenAPI */
+  },
+});
+```
+
+Full schema: **`POST /v3/wallet/items/send`** in [sdk-docs](https://cloud.handcash.io/sdk-docs/).
+
+## Lock and unlock
+
+```javascript
+await Items.postV3WalletItemsLockByOrigin({ client, path: { origin: itemOrigin } });
+await Items.postV3WalletItemsUnlockByOrigin({ client, path: { origin: itemOrigin } });
+```
+
+## Locked items (app credentials)
+
+List locked items uses **app id + app secret** on the client in some flows:
+
+```javascript
+const { data, error } = await Items.getV3WalletItemsLocked({
+  client: sdk.client,
+  query: { from: 0, to: 100 },
+});
+```
+
+Confirm **`security`** for this operation in [sdk-docs](https://cloud.handcash.io/sdk-docs/).
+
+## Collections, stats, history
+
+- **List / detail / deactivate collections:** [Collections](/connect/collections)
+- **Create a collection:** [Collections → minting](/connect/collections#create-a-new-collection-minting)
+- **Trade history, metrics, top traded, etc.:** generated methods on **`Items`** (`getV3WalletItemsTradeHistory`, `getV3WalletItemsMetrics`, …) — names match paths under `/v3/wallet/items/`.
+
+## Friends
+
+Saved friends and profile lookup are documented in [Friends](/connect/friends) (`Users` vs `Connect.getPublicUserProfiles`).
+
+## Minting, burn, craft
+
+Burn-and-create and item creation orders are **`Minter`**, not **`Items`**: [Minting & burn](/connect/minting-and-burn).

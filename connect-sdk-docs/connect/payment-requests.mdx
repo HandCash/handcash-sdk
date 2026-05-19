@@ -1,0 +1,121 @@
+# Payment Requests
+
+**Payment requests** are pay links or invoices that your app creates. A customer opens the link (or scans a QR code), sees the product and amount, and pays. This is different from **instant payments** ([Connect.pay](/connect/payments)), where your server sends money from an already-authorized user’s wallet.
+
+The HandCash SDK exposes this as the **`PaymentRequests`** class, generated from the HandCash Cloud OpenAPI spec. All methods return `{ data, error }`. Use your **app credentials** only (no user `authToken`): pass `sdk.client` or a client configured with `app-id` and `app-secret`.
+
+---
+
+## What the SDK provides (generated API)
+
+These methods come from the HandCash Cloud `v3/paymentRequests` routes and are available on **`PaymentRequests`** in `@handcash/sdk`:
+
+| Method | HTTP | Description |
+|--------|------|-------------|
+| `PaymentRequests.createPaymentRequest` | POST /v3/paymentRequests/ | Create a new payment request (pay link). |
+| `PaymentRequests.getPaymentRequests` | GET /v3/paymentRequests/ | List all payment requests for your app. |
+| `PaymentRequests.getPaymentRequest` | GET /v3/paymentRequests/{id} | Get one payment request (private details). |
+| `PaymentRequests.updatePaymentRequest` | PUT /v3/paymentRequests/{id} | Update a payment request. |
+| `PaymentRequests.deletePaymentRequest` | DELETE /v3/paymentRequests/{id} | Delete a payment request. |
+| `PaymentRequests.getPaymentRequestsPublicInfo` | GET /v3/paymentRequests/public/{id} | Get public info (e.g. for a pay page). |
+| `PaymentRequests.getPaymentRequestsPublicStats` | GET /v3/paymentRequests/public/stats/{id} | Get public stats (e.g. units sold). |
+
+---
+
+## Create a payment request
+
+Creates a new pay link. Use the **app-level client** (no user auth):
+
+```javascript
+import { getInstance, PaymentRequests } from '@handcash/sdk';
+
+const sdk = getInstance({
+  appId: process.env.HANDCASH_APP_ID,
+  appSecret: process.env.HANDCASH_APP_SECRET,
+  baseUrl: 'https://cloud.handcash.io',
+});
+
+const appClient = sdk.client;
+
+const { data, error } = await PaymentRequests.createPaymentRequest({
+  client: appClient,
+  body: {
+    product: {
+      name: 'Premium upgrade',
+      description: 'One-time upgrade to premium',
+    },
+    instrumentCurrencyCode: 'BSV',
+    denominationCurrencyCode: 'USD',
+    receivers: [
+      { destination: 'your_handle', sendAmount: 9.99 },
+    ],
+    redirectUrl: 'https://yourapp.com/thank-you',
+    notifications: {
+      webhook: { webhookUrl: 'https://yourapp.com/webhooks/payment' },
+    },
+  },
+});
+
+if (error) throw new Error(error.message);
+console.log(data?.paymentRequestUrl, data?.paymentRequestQrCodeUrl);
+```
+
+- **product**: name, optional description, longDescription, imageUrl.
+- **instrumentCurrencyCode**: `'BSV'` or `'MNEE'`.
+- **denominationCurrencyCode**: optional; e.g. `'USD'` so **receivers[].sendAmount** is in USD.
+- **receivers**: array of `{ destination, sendAmount, tags? }` (handle, paymail, or address).
+- **requestedUserData**, **paymentMethods**, **redirectUrl**, **notifications**, **expirationType**, **enabledAt**, etc. are optional; see the [Cloud API](https://cloud.handcash.io/sdk-docs/) or the generated TypeScript types for the full request body.
+
+---
+
+## List and get payment requests
+
+List all payment requests for your app, or fetch one by id (private details):
+
+```javascript
+const { data: list, error: listError } = await PaymentRequests.getPaymentRequests({
+  client: appClient,
+});
+if (listError) throw new Error(listError.message);
+const items = list?.items ?? [];
+
+const { data: one, error: getError } = await PaymentRequests.getPaymentRequest({
+  client: appClient,
+  path: { id: 'payment-request-id' },
+});
+```
+
+---
+
+## Update and delete
+
+```javascript
+await PaymentRequests.updatePaymentRequest({
+  client: appClient,
+  path: { id: 'payment-request-id' },
+  body: { /* fields to update */ },
+});
+
+await PaymentRequests.deletePaymentRequest({
+  client: appClient,
+  path: { id: 'payment-request-id' },
+});
+```
+
+---
+
+## Public info and stats (no auth)
+
+For a public pay page or widget, use the **public** endpoints (no app-secret needed; safe to call from a browser or public backend):
+
+```javascript
+const { data: publicInfo } = await PaymentRequests.getPaymentRequestsPublicInfo({
+  path: { id: 'payment-request-id' },
+});
+
+const { data: publicStats } = await PaymentRequests.getPaymentRequestsPublicStats({
+  path: { id: 'payment-request-id' },
+});
+```
+
+These match the generated `PaymentRequests` methods and the HandCash Cloud `v3/paymentRequests` API.

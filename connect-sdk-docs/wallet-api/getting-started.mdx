@@ -1,0 +1,52 @@
+# Getting Started
+
+> Build native wallet infrastructure into your application with email-based user onboarding.
+
+The **Wallet API** (also called **WaaS** — wallet-as-a-service) lets you create and operate **embedded HandCash wallets** for your users under `/v1/waas/*`. It is a **different product** from **[HandCash Connect](/connect/getting-started)**, which links existing HandCash users via redirect and `authToken`.
+
+<Warning>
+The public npm package **`@handcash/sdk` does not include Wallet API clients** (no `WalletService` class). It only wraps Connect, Items, Users, Minter, and Payment Requests. Integrate Wallet API via **REST** or generate a client from the OpenAPI spec (tag: **Wallet API**).
+</Warning>
+
+## Setup
+
+1. Create an application in the [Developer Dashboard](https://dashboard.handcash.io).
+
+2. Save your **App ID** and **App Secret** for server-side calls.
+
+3. **Enable wallet creation** for your app — contact [sales@handcash.io](mailto:sales@handcash.io) with your App ID. Until this is enabled, account-creation endpoints may be limited (default cap without the feature flag).
+
+4. Use the **Wallet API** contract (not the Connect quick start):
+   - **OpenAPI:** [cloud.handcash.io/sdk-docs.json](https://cloud.handcash.io/sdk-docs.json) — filter tag **Wallet API**
+   - **Explorer:** [cloud.handcash.io/sdk-docs](https://cloud.handcash.io/sdk-docs/)
+   - **Base URL:** `https://cloud.handcash.io`
+
+## Overview
+
+| Capability | Typical endpoints |
+|------------|-------------------|
+| User onboarding | `POST /v1/waas/account/requestEmailCode`, `POST /v1/waas/account`, `POST /v1/waas/account/accessKey` |
+| Balances | `GET /v1/waas/wallet/balances` |
+| Payments | `POST /v1/waas/wallet/pay` |
+| Transaction history | `GET /v1/waas/wallet/transactions`, `GET /v1/waas/wallet/transaction` |
+| Items (optional) | `POST /v1/waas/items`, `POST /v1/waas/items/transfer`, … |
+
+Account setup uses **`app-id`** and **`app-secret`** headers. Wallet operations use **signed requests** with the user’s **access private key** (generated on your server during onboarding). See **[Request signing](/wallet-api/request-signing)**.
+
+## Choose the right product
+
+| | **Wallet API (this guide)** | **Connect** |
+|---|---------------------------|-------------|
+| User | Your user (may be new to HandCash) | Existing HandCash user |
+| Onboarding | Email code → create account in your app | Redirect → authorize app |
+| Auth for wallet calls | Sign with user **access key** | `authToken` + `@handcash/sdk` |
+| Docs | Wallet API section (here) | [Connect quick start](/connect/getting-started) |
+
+Not sure? Read **[Wallet API vs Connect](/wallet-api/waas-vs-connect)**.
+
+## Next steps
+
+- **[Account onboarding](/wallet-api/account-onboarding)** — email verification, create account, activate access key
+- **[Request signing](/wallet-api/request-signing)** — required for `/v1/waas/wallet/*`
+- **[Payments & balances](/wallet-api/payments-and-balances)** — pay, balances, history
+- **[Self-custody wallets](/wallet-api/self-custody)** — `wallet-xpub` instead of signed payloads

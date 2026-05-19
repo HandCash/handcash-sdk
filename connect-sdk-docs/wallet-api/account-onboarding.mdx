@@ -1,0 +1,81 @@
+# Account onboarding
+
+Wallet API account endpoints use your application credentials. All paths are under `https://cloud.handcash.io`.
+
+**Headers (account setup):**
+
+| Header | Value |
+|--------|--------|
+| `app-id` | Your App ID |
+| `app-secret` | Your App Secret |
+| `Content-Type` | `application/json` |
+
+Wallet creation must be **enabled for your App ID** (see [Getting started](/wallet-api/getting-started)).
+
+## 1. Request email verification code
+
+```http
+POST /v1/waas/account/requestEmailCode
+```
+
+```json
+{
+  "email": "user@example.com"
+}
+```
+
+Response includes a `requestId` (and triggers the verification email flow).
+
+## 2. Generate an access key pair (your server)
+
+Before creating the account, generate a secp256k1 key pair on your backend. You will:
+
+- Send the **public** key as `accessPublicKey` when creating the account
+- Store the **private** key securely — it signs all `/v1/waas/wallet/*` requests (see [Request signing](/wallet-api/request-signing))
+
+Never expose the private key to the client unless your security model intentionally requires it.
+
+## 3. Create the embedded account
+
+```http
+POST /v1/waas/account
+```
+
+```json
+{
+  "email": "user@example.com",
+  "alias": "myuser",
+  "accessPublicKey": "<hex-public-key>"
+}
+```
+
+Optional: check alias availability first:
+
+```http
+GET /v1/waas/account/aliasAvailability/{alias}
+```
+
+## 4. Activate the access key
+
+If the user already exists or needs key activation:
+
+```http
+POST /v1/waas/account/accessKey
+```
+
+```json
+{
+  "email": "user@example.com",
+  "accessPublicKey": "<hex-public-key>"
+}
+```
+
+## 5. Call wallet endpoints
+
+Use the access **private** key to sign requests to `/v1/waas/wallet/balances`, `/v1/waas/wallet/pay`, etc.
+
+[Request signing →](/wallet-api/request-signing) · [Payments & balances →](/wallet-api/payments-and-balances)
+
+## Self-custody variant
+
+For wallets you control with an extended public key, use `POST /v1/waas/account/selfCustodial` and `/v1/waas/wallet/selfCustody/*` with the `wallet-xpub` header. See **[Self-custody wallets](/wallet-api/self-custody)**.

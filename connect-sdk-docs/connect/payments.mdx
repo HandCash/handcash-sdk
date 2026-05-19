@@ -1,0 +1,86 @@
+# Instant Payments
+
+**Instant payments** use **`Connect.pay`**: an **authorized user** (with `authToken`) sends money from their HandCash wallet to handles, paymails, or addresses. This is the SDK method generated from the HandCash Cloud Connect API.
+
+For **payment requests** (pay links / invoices your app creates so customers can pay you), see **[Payment Requests](/connect/payment-requests)** — those use the **`PaymentRequests`** class, also generated from the Cloud API.
+
+All methods return `{ data, error }`; check `error` before using `data`.
+
+## Simple payment
+
+```javascript
+import { getInstance, Connect } from '@handcash/sdk';
+
+const sdk = getInstance({ appId, appSecret, baseUrl: 'https://cloud.handcash.io' });
+const client = sdk.getAccountClient(authToken);
+
+const { data, error } = await Connect.pay({
+  client,
+  body: {
+    instrumentCurrencyCode: 'BSV',
+    denominationCurrencyCode: 'USD',
+    description: 'Hold my beer!🍺',
+    receivers: [{ destination: 'friend_handle', sendAmount: 0.25 }],
+  },
+});
+
+if (error) throw new Error(error.message);
+console.log(data?.transactionId);
+```
+
+- **destination**: HandCash handle, paymail (e.g. `user@relayx.io`), or BSV address.
+- **sendAmount**: Amount in the denomination currency (e.g. USD when `denominationCurrencyCode: 'USD'`).
+
+## Pay to multiple people
+
+You can send to multiple recipients in one payment:
+
+```javascript
+const { data, error } = await Connect.pay({
+  client,
+  body: {
+    instrumentCurrencyCode: 'BSV',
+    denominationCurrencyCode: 'USD',
+    description: 'You guys rock!😎',
+    receivers: [
+      { destination: 'alice', sendAmount: 0.25 },
+      { destination: 'bob@relayx.io', sendAmount: 0.1 },
+      { destination: '131xrWSKXHbhucFPTfZqnxF8ZhjpMxJH7K', sendAmount: 0.05 },
+    ],
+  },
+});
+```
+
+- **Handles** (e.g. `alice`): best for other HandCash users.
+- **Paymails** (e.g. `user@relayx.io`): for other wallets that support paymail.
+- **P2PKH addresses**: for any BSV address.
+
+## Supported currencies
+
+Use `instrumentCurrencyCode: 'BSV'` or `'MNEE'` and optionally `denominationCurrencyCode` so `sendAmount` is in that fiat (e.g. `'USD'`). Supported fiat codes include:
+
+| Code | Code | Code |
+| ---- | ---- | ---- |
+| USD | EUR | GBP |
+| AUD | CAD | CHF |
+| JPY | BRL | MXN |
+| And others — see [cloud API](https://cloud.handcash.io/sdk-docs/) for the full list. |
+
+For BSV/satoshis you can use `instrumentCurrencyCode: 'BSV'` and denomination as needed.
+
+## Exchange rate
+
+To show amounts in the user’s currency or lock a rate:
+
+```javascript
+const { data: rate, error } = await Connect.getExchangeRate({
+  client: sdk.client,
+  path: { currencyCode: 'USD' },
+});
+```
+
+Use `sdk.client` (app-level client) when no specific user is required.
+
+## Attach data
+
+Payments can include attached data (e.g. signed receipts or hashes). The exact request shape is defined in the [Cloud API](https://cloud.handcash.io/sdk-docs/). Use the same `Connect.pay` call and add any supported attachment fields to the request body as per the API spec.

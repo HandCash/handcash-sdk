@@ -1,0 +1,24 @@
+---
+title: SDK API reference
+description: User-facing OpenAPI documentation for the HandCash Connect SDK surface
+---
+
+This site includes a **full API reference** generated from the same OpenAPI document as production HandCash Cloud (see the **HandCash SDK API** group in the sidebar under **API reference**).
+
+## What you get
+
+- **Per-endpoint pages** — request parameters, bodies, responses, and security (app id/secret, signed user requests, etc.).
+- **Try-it / playground** — when the spec includes a `servers` entry and your Mintlify project allows it, you can send requests from the docs. If no server URL is in the spec, Mintlify still shows the full contract; use your own client or [Swagger UI on cloud](https://cloud.handcash.io/sdk-docs/) to execute calls.
+
+## Raw spec
+
+- **JSON:** [cloud.handcash.io/sdk-docs.json](https://cloud.handcash.io/sdk-docs.json)
+- **Swagger UI:** [cloud.handcash.io/sdk-docs](https://cloud.handcash.io/sdk-docs/)
+
+## npm client
+
+The **`@handcash/sdk`** TypeScript client is generated from a **subset** of this document: `Connect`, `Items`, `Users`, `Minter`, and `PaymentRequests`. Operations tagged **Wallet API** (`/v1/waas/*`) appear in the reference but are **not** published in the npm package — integrate those via REST or generate your own client from the spec. See **[Wallet API getting started](/wallet-api/getting-started)**.
+
+## Keeping docs in sync
+
+If you load the spec **by URL**, Mintlify does not redeploy when the JSON changes. Trigger a docs deployment when you ship cloud changes that affect `sdk-docs.json` (see [Mintlify: trigger deployment](https://mintlify.com/api/update/trigger)), or switch the `openapi` source in `docs.json` to a **committed** copy of the spec in this repo if you want deploys tied to git only.

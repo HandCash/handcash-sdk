@@ -1,0 +1,47 @@
+# Quick Start
+
+> **v2 is deprecated.** If you used `@handcash/handcash-connect`, read [Migration from v2](/connect/migration-from-v2) and switch to `@handcash/sdk`.
+
+<Note>
+This guide is for **HandCash Connect** (users who already have HandCash and authorize your app). For **embedded wallets** (Wallet API / WaaS under `/v1/waas/*`), see **[Wallet API getting started](/wallet-api/getting-started)** — that flow does not use `@handcash/sdk`.
+</Note>
+
+## Install
+
+Install the HandCash SDK in your Node.js project:
+
+```bash
+npm i @handcash/sdk
+```
+
+## Your first payment
+
+Create an SDK instance and get a client for the authorized user. All Connect methods return `{ data, error }` — always check `error` before using `data`.
+
+- **appId** and **appSecret**: Your app credentials from the [HandCash Developer Dashboard](https://dashboard.handcash.io).
+- **authToken**: The user's authorization token received after they connect your app. [User authorization →](/connect/user-authorization)
+
+```javascript
+import { getInstance, Connect } from '@handcash/sdk';
+
+const sdk = getInstance({
+  appId: process.env.HANDCASH_APP_ID,
+  appSecret: process.env.HANDCASH_APP_SECRET,
+  baseUrl: 'https://cloud.handcash.io',
+});
+
+const client = sdk.getAccountClient(authToken);
+
+const { data, error } = await Connect.pay({
+  client,
+  body: {
+    instrumentCurrencyCode: 'BSV',
+    denominationCurrencyCode: 'USD',
+    description: 'Hold my beer!🍺',
+    receivers: [{ destination: 'friend_handle', sendAmount: 0.25 }],
+  },
+});
+
+if (error) throw new Error(error.message);
+console.log(data?.transactionId);
+```

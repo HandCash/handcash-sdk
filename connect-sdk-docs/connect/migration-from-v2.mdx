@@ -1,0 +1,26 @@
+# Migration from v2 Connect docs
+
+The old **HandCash Connect v2** guides used the package `@handcash/handcash-connect`. **Do not use that package for new work.**
+
+Use **`@handcash/sdk`** only. The live site still has pages under `docs.handcash.io/v2/handcash-connect/` for historical reference; **this documentation set replaces those guides** for Connect-style apps (auth, profile, payments, items, collections, minting).
+
+| Old v2 topic | Use instead |
+|--------------|-------------|
+| Send an Item | [Items → Transfer](/connect/items#transfer-items) — `Items.postV3WalletItemsSend` |
+| Lock and Unlock Items | [Items → Lock and unlock](/connect/items#lock-and-unlock) |
+| Burn an Item / Burn and Create | [Minting & burn](/connect/minting-and-burn) — `Minter` class, `issueItems`, `burnAndCreate` |
+| Collection Management | [Collections](/connect/collections) — list/detail/deactivate on **Items**; **create** via **Minter** + item creation order |
+| Friends | [Friends](/connect/friends) — `Users` (saved friends) vs resolving profiles by handle |
+
+**Install**
+
+```bash
+npm uninstall @handcash/handcash-connect
+npm i @handcash/sdk
+```
+
+**Further reading**
+
+- [Quick start](/connect/getting-started)
+- [User authorization](/connect/user-authorization)
+- [API reference (OpenAPI)](https://cloud.handcash.io/sdk-docs/)

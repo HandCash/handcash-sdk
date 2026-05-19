@@ -1,0 +1,43 @@
+# Friends and social graph
+
+There are **two** different concepts in v3:
+
+## 1. Saved friends (`Users` class)
+
+**`/v3/friends`** — HandCash “saved friends” for the **authorized user** (add / list / remove). Exposed as:
+
+```javascript
+import { getInstance, Users } from '@handcash/sdk';
+
+const sdk = getInstance({ appId, appSecret });
+const client = sdk.getAccountClient(authToken);
+
+const { data, error } = await Users.getV3Friends({ client });
+
+// Add: Users.postV3Friends({ client, body: { /* alias per API */ } })
+// Remove: Users.deleteV3FriendsById({ client, path: { id: friendRecordId } })
+```
+
+Requires the permissions your app requests for friends / device admin flows. See [sdk-docs](https://cloud.handcash.io/sdk-docs/) for request bodies.
+
+## 2. Resolve profiles by handle (`Connect`)
+
+To show **display names and avatars** for arbitrary handles (not necessarily “saved friends”), use **`Connect.getPublicUserProfiles`** with the **app** client (no user private key):
+
+```javascript
+const appClient = sdk.client;
+
+const { data, error } = await Connect.getPublicUserProfiles({
+  client: appClient,
+  query: { aliases: ['handle1', 'handle2'] },
+});
+```
+
+The **`aliases`** query parameter is required in the generated types; pass the handles you need.
+
+**Choosing an approach**
+
+- **Address book inside HandCash** (user curated): **`Users`**.
+- **Look up people by handle** for UI: **`Connect.getPublicUserProfiles`**.
+
+The old v2 doc described only **`getFriends()`** on the legacy client; v3 splits the above behaviors explicitly.

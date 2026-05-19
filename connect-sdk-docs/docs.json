@@ -1,0 +1,107 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "HandCash Developer Documentation",
+  "description": "v3 SDK, Connect, items, and APIs",
+  "colors": {
+    "primary": "#0ea5e9",
+    "light": "#38bdf8",
+    "dark": "#0284c7"
+  },
+  "favicon": "/images/favicon.svg",
+  "logo": {
+    "light": "/images/logo-light.svg",
+    "dark": "/images/logo-dark.svg"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Hosted pay",
+            "tag": "new",
+            "icon": "wallet",
+            "pages": ["connect/hosted-pay"]
+          },
+          {
+            "group": "Overview",
+            "pages": ["introduction", "legacy/v2-connect"]
+          },
+          {
+            "group": "Wallet API (WaaS)",
+            "icon": "wallet-cards",
+            "pages": [
+              "wallet-api/getting-started",
+              "wallet-api/waas-vs-connect",
+              "wallet-api/account-onboarding",
+              "wallet-api/request-signing",
+              "wallet-api/payments-and-balances",
+              "wallet-api/self-custody"
+            ]
+          },
+          {
+            "group": "HandCash Connect (v3 SDK)",
+            "pages": [
+              "connect/migration-from-v2",
+              "connect/getting-started",
+              "connect/user-authorization",
+              "connect/user-profile",
+              "connect/friends",
+              "connect/payments",
+              "connect/payment-requests",
+              "connect/items",
+              "connect/collections",
+              "connect/minting-and-burn",
+              "connect/promise-payments",
+              "connect/data-ownership",
+              "connect/data-encryption",
+              "connect/error-handling",
+              "connect/examples"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["api-reference/overview"]
+          },
+          {
+            "group": "HandCash SDK API",
+            "openapi": "https://cloud.handcash.io/sdk-docs.json"
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "HandCash",
+          "href": "https://handcash.io",
+          "icon": "house"
+        },
+        {
+          "anchor": "Dashboard",
+          "href": "https://dashboard.handcash.io",
+          "icon": "layout-dashboard"
+        }
+      ]
+    }
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@handcash.io"
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "website": "https://handcash.io"
+    }
+  }
+}

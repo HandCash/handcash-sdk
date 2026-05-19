@@ -1,0 +1,32 @@
+---
+title: Introduction
+description: HandCash Developer Tools — v3 SDK, Connect, items, and wallet infrastructure
+---
+
+## HandCash Developer Tools
+
+Integrate HandCash into your applications with two main products:
+
+| Product | Use case | Integration |
+|---------|----------|-------------|
+| **[Wallet API (WaaS)](/wallet-api/getting-started)** | Embedded wallets for *your* users (email onboarding) | REST `/v1/waas/*` + [request signing](/wallet-api/request-signing) |
+| **[HandCash Connect](/connect/getting-started)** | Existing HandCash users authorize your app | npm [`@handcash/sdk`](https://www.npmjs.com/package/@handcash/sdk) |
+
+The **`@handcash/sdk`** package covers **Connect** only (`Connect`, `Items`, `Users`, `Minter`, `PaymentRequests`). It does **not** include Wallet API clients.
+
+**API reference:** open the **API reference** tab (OpenAPI from production) or [cloud.handcash.io/sdk-docs](https://cloud.handcash.io/sdk-docs/). Filter tag **Wallet API** for WaaS paths.  
+**Raw JSON:** [cloud.handcash.io/sdk-docs.json](https://cloud.handcash.io/sdk-docs.json)  
+**Dashboard:** [dashboard.handcash.io](https://dashboard.handcash.io)
+
+## Wallet API
+
+Whitelabel wallet infrastructure: create accounts, balances, payments, and transaction history inside your app. Start with **[Getting started](/wallet-api/getting-started)**.
+
+## Connect SDK
+
+Server-side Node.js: authorization, profiles, payments, items, collections, minting, and payment requests. If you used **`@handcash/handcash-connect`** (v2), read **[Migration from v2](/connect/migration-from-v2)** first.
+
+## Other HandCash docs
+
+- **Items (minting & inventory)** — also on [docs.handcash.io v3 items](https://docs.handcash.io/v3/items/inventory) (HandCash-hosted guides).
+- **HandCash Pay** — payment links and hosted payer flows are summarized in **[Hosted HandCash Pay](/connect/hosted-pay)**.

@@ -1,0 +1,20 @@
+# Error Handling
+
+All Connect, Users, Items, and Minter methods return `{ data, error }`. Always check `error` before using `data`; on failure `data` may be undefined.
+
+```javascript
+const { data, error } = await Connect.pay({ client, body: { ... } });
+
+if (error) {
+  console.error(error.message);
+  throw new Error(error.message ?? 'Payment failed');
+}
+
+const txId = data?.transactionId;
+```
+
+Common cases:
+
+- **Invalid or expired authToken** — get a new authorization from the user.
+- **Insufficient balance** — prompt the user or handle in your flow.
+- **Invalid parameters** — check `error.message` and your request body against the [Cloud API](https://cloud.handcash.io/sdk-docs/).

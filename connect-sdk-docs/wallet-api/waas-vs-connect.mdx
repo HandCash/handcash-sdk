@@ -1,0 +1,28 @@
+# Wallet API vs Connect
+
+HandCash offers two server-side integration models. Pick one based on who your users are and who holds the wallet keys.
+
+## Wallet API (WaaS)
+
+**Use when:** You embed HandCash wallets inside your product and onboard users with email (or self-custody xpub).
+
+- Routes: `/v1/waas/*`
+- Create users: `POST /v1/waas/account/*` with **app-id** + **app-secret**
+- Operate wallets: signed calls to `/v1/waas/wallet/*` with the user’s **access private key**
+- **No** `@handcash/sdk` class for these routes today — REST or OpenAPI-generated client
+
+[Getting started →](/wallet-api/getting-started)
+
+## HandCash Connect
+
+**Use when:** Users already have HandCash and authorize your app from the HandCash app or web.
+
+- Routes: `/v3/connect/*`, `/v3/wallet/*` (with Connect auth), items, payment requests, etc.
+- Flow: redirect → **authToken** → `getInstance()` + `getAccountClient(authToken)` → `Connect.pay`, `Items.*`, …
+- **npm:** `@handcash/sdk`
+
+[Connect quick start →](/connect/getting-started)
+
+## Common mistake
+
+Installing `@handcash/sdk` and importing `WalletService` will not work — that export does not exist. Connect wallet methods live on **`Connect`** (`Connect.pay`, `Connect.getBalances`, …). Wallet API is a separate OpenAPI tag and URL prefix.

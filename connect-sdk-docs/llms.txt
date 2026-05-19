@@ -1,0 +1,35 @@
+# HandCash Connect & developer documentation (Mintlify)
+
+## Overview
+- [Introduction](https://docs.handcash.io/introduction): HandCash developer tools — Wallet API vs Connect
+- [Legacy v2 Connect (deprecated)](https://docs.handcash.io/legacy/v2-connect): Do not use @handcash/handcash-connect for new work
+
+## Wallet API (WaaS) — /v1/waas/*, not in @handcash/sdk npm
+- [Getting started](https://docs.handcash.io/wallet-api/getting-started)
+- [Wallet API vs Connect](https://docs.handcash.io/wallet-api/waas-vs-connect)
+- [Account onboarding](https://docs.handcash.io/wallet-api/account-onboarding)
+- [Request signing](https://docs.handcash.io/wallet-api/request-signing)
+- [Payments & balances](https://docs.handcash.io/wallet-api/payments-and-balances)
+- [Self-custody wallets](https://docs.handcash.io/wallet-api/self-custody)
+
+## HandCash Connect (v3 SDK) — replaces v2/handcash-connect/*
+- [Migration from v2](https://docs.handcash.io/connect/migration-from-v2)
+- [Quick start](https://docs.handcash.io/connect/getting-started)
+- [User authorization](https://docs.handcash.io/connect/user-authorization)
+- [User profile](https://docs.handcash.io/connect/user-profile)
+- [Friends](https://docs.handcash.io/connect/friends)
+- [Payments](https://docs.handcash.io/connect/payments)
+- [Payment requests](https://docs.handcash.io/connect/payment-requests)
+- [Items](https://docs.handcash.io/connect/items)
+- [Collections](https://docs.handcash.io/connect/collections)
+- [Minting & burn](https://docs.handcash.io/connect/minting-and-burn)
+- [Promise payments](https://docs.handcash.io/connect/promise-payments)
+- [Data ownership](https://docs.handcash.io/connect/data-ownership)
+- [Data encryption](https://docs.handcash.io/connect/data-encryption)
+- [Error handling](https://docs.handcash.io/connect/error-handling)
+- [Examples](https://docs.handcash.io/connect/examples)
+
+## API reference
+- [SDK OpenAPI overview](https://docs.handcash.io/api-reference/overview)
+
+Note: Until this Mintlify project is deployed to docs.handcash.io, use local `mintlify dev` or your preview URL. Replace the domain above with your deployment host when publishing.

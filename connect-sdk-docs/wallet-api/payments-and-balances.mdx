@@ -1,0 +1,59 @@
+# Payments & balances
+
+After [account onboarding](/wallet-api/account-onboarding), call wallet endpoints with [signed requests](/wallet-api/request-signing).
+
+**Base URL:** `https://cloud.handcash.io`
+
+## Balances
+
+```http
+GET /v1/waas/wallet/balances
+```
+
+Signed `GET` with an empty body. Returns spendable balances for the embedded wallet user.
+
+## Pay
+
+```http
+POST /v1/waas/wallet/pay
+```
+
+Signed `POST` with a JSON body. Shape matches Connect payments (instrument currency, receivers, description, etc.). See the **Wallet API** tag in [cloud.handcash.io/sdk-docs](https://cloud.handcash.io/sdk-docs/) for the full schema.
+
+Example body (illustrative — confirm fields in OpenAPI):
+
+```json
+{
+  "instrumentCurrencyCode": "BSV",
+  "denominationCurrencyCode": "USD",
+  "description": "Order #1234",
+  "receivers": [
+    { "destination": "merchant_handle", "sendAmount": 1.0 }
+  ]
+}
+```
+
+Sign using the **exact** serialized JSON string as the request body.
+
+## Transaction history
+
+```http
+GET /v1/waas/wallet/transactions
+GET /v1/waas/wallet/transaction
+```
+
+Query parameters and response shapes are documented under **Wallet API** in the OpenAPI spec.
+
+## Deposit info
+
+```http
+GET /v1/waas/wallet/depositInfo
+```
+
+Returns deposit address / QR details for the embedded user (signed).
+
+## Connect SDK is not used here
+
+These routes are **not** exposed as `Connect.pay` or `WalletService` in `@handcash/sdk`. Use REST + signing, or a client you generate from OpenAPI.
+
+If your users **already have HandCash** and only authorize your app, use **[Connect payments](/connect/payments)** instead.

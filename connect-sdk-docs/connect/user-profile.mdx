@@ -1,0 +1,58 @@
+# User Profile
+
+HandCash Connect gives you access to the user's profile and balance **when they have granted the right permissions**.
+
+Use this to speed up sign-up (no extra forms) and to show personalized info (e.g. balance, local currency) inside your app.
+
+## Balance
+
+> Requires the **Balance** [permission](/connect/user-authorization#permissions).
+
+```javascript
+import { getInstance, Connect } from '@handcash/sdk';
+
+const sdk = getInstance({ appId, appSecret, baseUrl: 'https://cloud.handcash.io' });
+const client = sdk.getAccountClient(authToken);
+
+const { data: spendableBalances, error: spendableError } = await Connect.getSpendableBalances({ client });
+if (spendableError) throw new Error(spendableError.message);
+
+const { data: allBalances } = await Connect.getBalances({ client });
+
+console.log(spendableBalances); // e.g. { BSV: { ... }, MNEE: { ... } }
+```
+
+## Public profile
+
+The user's public profile (handle, display name, avatar) is available when they grant access.
+
+```javascript
+const { data, error } = await Connect.getCurrentUserProfile({ client });
+if (error) throw new Error(error.message);
+
+console.log(data?.handle, data?.displayName, data?.avatarUrl);
+```
+
+## Look up other users by handle
+
+To resolve handles to public profiles (e.g. for displaying names), use the app-level client (no user auth):
+
+```javascript
+const appClient = sdk.client;
+
+const { data, error } = await Connect.getPublicUserProfiles({
+  client: appClient,
+  query: { aliases: ['handle1', 'handle2'] },
+});
+if (error) throw new Error(error.message);
+
+const items = data?.items ?? [];
+```
+
+## Preferences
+
+User preferences (e.g. local currency) are available from the profile and help you show amounts in the user's preferred currency.
+
+## Friends vs handles
+
+Saved friends and profile lookup by handle are covered in [Friends](/connect/friends).
